@@ -10,18 +10,25 @@ import com.ex1.demo.dto.Board;
 
 @Mapper
 public interface ArticleDao {
-	Article getArticleById(@Param("id") int id);
+    boolean modifyArticle(@Param("id") int id, @Param("title") String title, @Param("body") String body);
 
-	void doWrite(@Param("id") int id, @Param("title") String title, @Param("body") String body, @Param("boardId") int boardId, @Param("memberId") int memberId);
-	
+    void writeArticle(@Param("boardId") int boardId, @Param("memberId") int memberId, @Param("title") String title,
+                      @Param("body") String body);
+    
+    Article getArticleById(@Param("id") int id);
+
+	int getLastInsertId();
+
+	void deleteArticleById(@Param("id") int id);
+
 	Board getBoardById(@Param("id") int id);
-	
+
 	int getArticlesTotalCount(@Param("boardId") int boardId,
 			@Param("searchKeywordTypeCode") String searchKeywordTypeCode, @Param("searchKeyword") String searchKeyword);
-	
+
 	List<Article> getForPrintArticles(@Param("boardId") int boardId,
 			@Param("searchKeywordTypeCode") String searchKeywordTypeCode, @Param("searchKeyword") String searchKeyword,
 			@Param("limitFrom") int limitFrom, @Param("limitTake") int limitTake);
 	
-	void writeArticle(@Param("boardId") int boardId, @Param("memberId") int memberId, @Param("title") String title, @Param("body") String body);
+	Article getForPrintArticleById(@Param("id") int id);
 }

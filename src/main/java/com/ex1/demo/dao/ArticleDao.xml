@@ -4,42 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ex1.demo.dao.ArticleDao">
-	<select id="getArticleById" resultType="Article">
-		SELECT *
-		FROM article AS A
-		WHERE A.id = #{id}
-	</select>
-	
-	<select id="getBoardById" resultType="Board">
-		SELECT *
-		FROM board AS B
-		WHERE B.id = #{id}
-		AND B.delStatus = 0
-	</select>
-	
-	<select id="getForPrintArticles" resultType="Article">
-		SELECT *
-		FROM article AS A
-		WHERE A.boardId = #{boardId}
-		<if test="searchKeyword != null">
-			<if test="searchKeywordTypeCode == 'titleAndBody'">
-				AND (
-				A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-				OR
-				A.body LIKE CONCAT('%', #{searchKeyword}, '%')
-				)
-			</if>
-			<if test="searchKeywordTypeCode == 'title'">
-				AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
-			<if test="searchKeywordTypeCode == 'body'">
-				AND A.body LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
-		</if>
-		ORDER BY A.id DESC
-		LIMIT #{limitFrom}, #{limitTake};
-	</select>	
-	
 	<select id="getArticlesTotalCount" resultType="int">
 		SELECT COUNT(*) AS cnt
 		FROM article AS A
@@ -62,6 +26,57 @@
 		AND A.delStatus = 0
 	</select>
 
+	<select id="getForPrintArticles" resultType="Article">
+		SELECT *
+		FROM article AS A
+		WHERE A.boardId = #{boardId}
+		<if test="searchKeyword != null">
+			<if test="searchKeywordTypeCode == 'titleAndBody'">
+				AND (
+				A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR
+				A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</if>
+			<if test="searchKeywordTypeCode == 'title'">
+				AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchKeywordTypeCode == 'body'">
+				AND A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+		</if>
+		ORDER BY A.id DESC
+		LIMIT #{limitFrom}, #{limitTake};
+	</select>
+
+	<select id="getBoardById" resultType="Board">
+		SELECT *
+		FROM board AS B
+		WHERE B.id = #{id}
+		AND B.delStatus = 0
+	</select>
+
+	<select id="getArticleById" resultType="Article">
+		SELECT *
+		FROM article AS A
+		WHERE A.id = #{id}
+		AND A.delStatus = 0
+	</select>
+	
+	<select id="getForPrintArticleById" resultType="Article">
+		SELECT A.*,
+		IFNULL(M.name, "삭제된_회원") AS extra__writerName
+		FROM article AS A
+		LEFT JOIN member AS M
+		ON A.memberId = M.id
+		WHERE A.id = #{id}
+		AND A.delStatus = 0
+	</select>
+
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+
 	<update id="modifyArticle">
 		UPDATE article
 		SET updateDate = NOW(),
@@ -71,7 +86,7 @@
 		WHERE id = #{id}
 	</update>
 
-	<insert id="doWrite">
+	<insert id="writeArticle">
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate =
@@ -82,7 +97,7 @@
 		body = #{body}
 	</insert>
 
-	<update id="">
+	<update id="deleteArticleById">
 		UPDATE article
 		SET delStatus = 1,
 		delDate = NOW()

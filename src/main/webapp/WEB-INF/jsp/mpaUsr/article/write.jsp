@@ -32,7 +32,8 @@ function ArticleWrite__submitForm(form) {
 
 <div class="section section-article-list">
 	<div class="container mx-auto">
-	    <form method="POST" action="doWrite">
+	    <form method="POST" action="doWrite" onsubmit="ArticleWrite__submitForm(this); return false;">
+	    	<input type="hidden" name="boardId" value="${board.id}" />
 	        <div class="form-control">
                 <label class="label">
                     제목
@@ -48,11 +49,11 @@ function ArticleWrite__submitForm(form) {
             </div>
 
             <div class="mt-4 btn-wrap gap-1">
-                <a href="#" class="btn btn-primary btn-sm mb-1">
+                <button type="submit" href="#" class="btn btn-primary btn-sm mb-1">
                     <span><i class="fas fa-save"></i></span>
                     &nbsp;
                     <span>작성</span>
-                </a>
+                </button>
 
                 <a href="#" class="btn btn-sm mb-1" title="자세히 보기">
                     <span><i class="fas fa-list"></i></span>

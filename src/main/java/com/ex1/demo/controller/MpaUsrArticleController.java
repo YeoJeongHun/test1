@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ex1.demo.dto.Article;
 import com.ex1.demo.dto.Board;
+import com.ex1.demo.dto.Rq;
 import com.ex1.demo.dto.ResultData;
 import com.ex1.demo.service.ArticleService;
 import com.ex1.demo.util.Util;
@@ -56,7 +57,6 @@ public class MpaUsrArticleController {
 
     @RequestMapping("/mpaUsr/article/doWrite")
     public String doWrite(HttpServletRequest req, int boardId, String title, String body) {
-
         if (Util.isEmpty(title)) {
             return Util.msgAndBack(req, "제목을 입력해주세요.");
         }
@@ -73,8 +73,8 @@ public class MpaUsrArticleController {
             return Util.msgAndBack(req, writeArticleRd.getMsg());
         }
 
-        String replaceUrl = "detail?id=" + writeArticleRd.getBody().get("id");
-        return Util.msgAndReplace(req, writeArticleRd.getMsg(), replaceUrl);
+        String replaceUri = "detail?id=" + writeArticleRd.getBody().get("id");
+        return Util.msgAndReplace(req, writeArticleRd.getMsg(), replaceUri);
     }
 
     @RequestMapping("/mpaUsr/article/doModify")
@@ -103,7 +103,6 @@ public class MpaUsrArticleController {
     }
 
     @RequestMapping("/mpaUsr/article/doDelete")
-
     public String doDelete(HttpServletRequest req, Integer id) {
         if (Util.isEmpty(id)) {
             return Util.msgAndBack(req, "id를 입력해주세요.");
@@ -115,9 +114,9 @@ public class MpaUsrArticleController {
             return Util.msgAndBack(req, rd.getMsg());
         }
 
-        String redirectUrl = "../article/list?boardId=" + rd.getBody().get("boardId");
+        String redirectUri = "../article/list?boardId=" + rd.getBody().get("boardId");
 
-        return Util.msgAndReplace(req, rd.getMsg(), redirectUrl);
+        return Util.msgAndReplace(req, rd.getMsg(), redirectUri);
     }
 
     @RequestMapping("/mpaUsr/article/list")

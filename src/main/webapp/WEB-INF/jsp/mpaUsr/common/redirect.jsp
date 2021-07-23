@@ -5,5 +5,12 @@ const alertMsg = '${msg}'.trim();
 if ( alertMsg ) {
 	alert(alertMsg);
 }
-history.back();
-</script> 
+const historyBack = '${historyBack}' == 'true';
+if ( historyBack ) {
+	history.back();
+}
+const replaceUri = '${replaceUri}'.trim();
+if ( replaceUri ) {
+	location.replace(replaceUri);
+}
+</script>

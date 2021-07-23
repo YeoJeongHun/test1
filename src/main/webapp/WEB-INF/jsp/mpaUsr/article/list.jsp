@@ -10,26 +10,38 @@
 <div class="section section-article-list">
 	<div class="container mx-auto">
 		<div class="total-items">
-			<span>TOTAL ITEMS : </span> <span>${totalItemsCount}</span>
+			<span>TOTAL ITEMS : </span>
+			<span>${totalItemsCount}</span>
 		</div>
 
 		<div class="total-pages">
-			<span>TOTAL PAGES : </span> <span>${totalPage}</span>
+			<span>TOTAL PAGES : </span>
+			<span>${totalPage}</span>
 		</div>
 
 		<div class="page">
-			<span>CURRENT PAGE : </span> <span>${page}</span>
+			<span>CURRENT PAGE : </span>
+			<span>${page}</span>
 		</div>
 
 		<hr />
+		<div class="plain-link-wrap gap-3 mt-4">
+            <a href="write?boardId=${board.id}" class="plain-link">
+                <span><i class="fas fa-edit"></i></span>
+                <span>글 작성</span>
+            </a>
+        </div>
 		<hr />
 
 		<div class="search-form-box mt-2 px-4">
 			<form action="" class="grid gap-2">
 				<input type="hidden" name="boardId" value="${board.id}" />
+
 				<div class="form-control">
-					<label class="label"> <span class="label-text">옵션</span>
-					</label> <select class="select select-bordered" name="searchKeywordType">
+					<label class="label">
+						<span class="label-text">옵션</span>
+					</label>
+					<select class="select select-bordered" name="searchKeywordType">
 						<option value="titleAndBody">제목+내용</option>
 						<option value="title">제목</option>
 						<option value="body">내용</option>
@@ -45,15 +57,19 @@
 				</div>
 
 				<div class="form-control">
-					<label class="label"> <span class="label-text">제목</span>
-					</label> <input value="${param.searchKeyword}" class="input input-bordered"
+					<label class="label">
+						<span class="label-text">제목</span>
+					</label>
+					<input value="${param.searchKeyword}" class="input input-bordered"
 						name="searchKeyword" type="text" placeholder="검색어를 입력해주세요."
 						maxlength="10" />
 				</div>
 
 				<div class="form-control">
-					<label class="label"> <span class="label-text">검색</span>
-					</label> <input type="submit" class="btn btn-sm btn-primary" value="검색" />
+					<label class="label">
+						<span class="label-text">검색</span>
+					</label>
+					<input type="submit" class="btn btn-sm btn-primary" value="검색" />
 				</div>
 			</form>
 		</div>
@@ -64,13 +80,19 @@
 			</c:if>
 			<c:forEach items="${articles}" var="article">
 				<div>
-					ID : ${article.id} <br> REG DATE : ${article.regDate} <br>
-					UPDATE DATE : ${article.updateDate} <br> TITLE :
-					${article.title} <br>
+					ID : ${article.id}
+					<br>
+					REG DATE : ${article.regDate}
+					<br>
+					UPDATE DATE : ${article.updateDate}
+					<br>
+					TITLE : ${article.title}
+					<br>
 				</div>
 				<hr />
 			</c:forEach>
 		</div>
+
 		<div class="pages mt-4 mb-4 text-center">
 			<c:set var="pageMenuArmSize" value="4" />
 			<c:set var="startPage"
@@ -78,28 +100,29 @@
 			<c:set var="endPage"
 				value="${page + pageMenuArmSize <= totalPage ? page + pageMenuArmSize : totalPage}" />
 
-			<c:set var="urlBase" value="?boardId=${board.id}" />
-			<c:set var="urlBase"
-				value="${urlBase}&searchKeywordType=${param.searchKeywordType}" />
+			<c:set var="uriBase" value="?boardId=${board.id}" />
+			<c:set var="uriBase"
+				value="${uriBase}&searchKeywordType=${param.searchKeywordType}" />
+			<c:set var="uriBase"
+				value="${uriBase}&searchKeyword=${param.searchKeyword}" />
+				
 			<c:set var="aClassStr"
 				value="px-2 inline-block border border-gray-200 rounded text-lg hover:bg-gray-200" />
 
-			<c:set var="urlBase"
-				value="${urlBase}&searchKeyword=${param.searchKeyword}" />
-
 			<c:if test="${startPage > 1}">
-				<a class="${aClassStr}" href="${urlBase}&page=1">◀◀</a>
-				<a class="${aClassStr}" href="${urlBase}&page=${startPage - 1}">◀</a>
+				<a class="${aClassStr}" href="${uriBase}&page=1">◀◀</a>
+				<a class="${aClassStr}" href="${uriBase}&page=${startPage - 1}">◀</a>
 			</c:if>
 
 			<c:forEach var="i" begin="${startPage}" end="${endPage}">
 				<a class="${aClassStr} ${page == i ? 'text-red-500' : ''}"
-					href="${urlBase}&page=${i}">${i}</a>
+					href="${uriBase}&page=${i}">${i}</a>
 			</c:forEach>
 
 			<c:if test="${endPage < totalPage}">
-				<a class="${aClassStr}" href="${urlBase}&page=${endPage + 1}">▶</a>
-				<a class="${aClassStr}" href="${urlBase}&page=${totalPage}">▶▶</a>
+				<a class="${aClassStr}" href="${uriBase}&page=${endPage + 1}">▶</a>
+
+				<a class="${aClassStr}" href="${uriBase}&page=${totalPage}">▶▶</a>
 			</c:if>
 		</div>
 	</div>

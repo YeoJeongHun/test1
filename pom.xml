@@ -39,6 +39,17 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+        <!-- 메일 보내기 위한 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <!-- 메일 보내기 위한 -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 		<!-- SQL 로거 -->
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>

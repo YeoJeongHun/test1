@@ -69,7 +69,7 @@ function MemberModify__submitForm(form) {
 	        <input type="hidden" name="loginPw">
 	        <div class="form-control">
                 <label class="label">
-                    로그인아이디
+                    로그인아이디${authKey}
                 </label>
                 <div class="plain-text">
                   ${rq.loginedMember.loginId}
@@ -137,6 +137,7 @@ function MemberModify__submitForm(form) {
                     <span>홈</span>
                 </a>
             </div>
+            <input type="hidden" name="authKey" value="${authKey}">
 	    </form>
 	</div>
 </div>

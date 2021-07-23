@@ -19,4 +19,8 @@ public interface MemberDao {
     
     void modify(@Param("id") int id, @Param("loginPw") String loginPw, @Param("name") String name, @Param("nickname") String nickname, @Param("cellphoneNo") String cellphoneNo, @Param("email") String email);
 
+	void issueAuthKey(@Param("id") int id, @Param("authKey") String authKey);
+
+	String getAuthKey(@Param("id") int id);
+
 }

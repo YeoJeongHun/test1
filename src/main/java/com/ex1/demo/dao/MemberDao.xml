@@ -2,64 +2,80 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ex1.demo.dao.MemberDao">
-    <select id="getMemberByLoginId" resultType="Member">
-        SELECT *
-        FROM `member` AS M
-        WHERE M.loginId = #{loginId}
-        AND M.delStatus = 0
-    </select>
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM `member` AS M
+		WHERE M.loginId = #{loginId}
+		AND M.delStatus = 0
+	</select>
 
-    <select id="getMemberById" resultType="Member">
-        SELECT *
-        FROM `member` AS M
-        WHERE M.id = #{id}
-        AND M.delStatus = 0
-    </select>
+	<select id="getMemberById" resultType="Member">
+		SELECT *
+		FROM `member` AS M
+		WHERE M.id = #{id}
+		AND M.delStatus = 0
+	</select>
 
-    <select id="getLastInsertId" resultType="int">
-        SELECT LAST_INSERT_ID()
-    </select>
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
 
-    <insert id="join">
-        INSERT INTO `member`
-        SET regDate = NOW(),
-        updateDate = NOW(),
-        loginId = #{loginId},
-        loginPw = #{loginPw},
-        name = #{name},
-        nickname = #{nickname},
-        cellphoneNo = #{cellphoneNo},
-        email = #{email}
-    </insert>
-    
-    <select id="getMemberByNameAndEmail" resultType="Member">
-        SELECT *
-        FROM `member` AS M
-        WHERE M.name = #{name}
-        AND M.email = #{email}
-        AND M.delStatus = 0
-    </select>
-    
-    <update id="modify">
-        UPDATE `member`
-        <set>
-            updateDate = NOW(),
-            <if test="loginPw != null">
-                loginPw = #{loginPw},
-            </if>
-            <if test="name != null">
-                name = #{name},
-            </if>
-            <if test="nickname != null">
-                nickname = #{nickname},
-            </if>
-            <if test="cellphoneNo != null">
-                cellphoneNo = #{cellphoneNo},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
+	<insert id="join">
+		INSERT INTO `member`
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		name = #{name},
+		nickname = #{nickname},
+		cellphoneNo = #{cellphoneNo},
+		email = #{email}
+	</insert>
+
+	<select id="getMemberByNameAndEmail" resultType="Member">
+		SELECT *
+		FROM `member` AS M
+		WHERE M.name = #{name}
+		AND M.email = #{email}
+		AND M.delStatus = 0
+	</select>
+
+	<update id="modify">
+		UPDATE `member`
+		<set>
+			updateDate = NOW(),
+			<if test="loginPw != null">
+				loginPw = #{loginPw},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname},
+			</if>
+			<if test="cellphoneNo != null">
+				cellphoneNo = #{cellphoneNo},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<insert id="issueAuthKey">
+		INSERT INTO authKey
+		SET memberId=#{id},
+		authKey=#{authKey},
+		issueDate=NOW(),
+		expireDate=DATE_ADD(NOW(), INTERVAL
+		30 MINUTE)
+	</insert>
+
+	<select id="getAuthKey" resultType="String">
+		SELECT authKey FROM authKey
+		WHERE memberId=#{id}
+		AND issueDate=(SELECT MAX(issueDate) FROM authKey)
+		AND expireDate>=NOW()
+	</select>
 </mapper>

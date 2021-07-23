@@ -1,8 +1,11 @@
 package com.ex1.demo.controller;
 
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,30 +26,23 @@ public class MpaUsrMemberController {
 
 	// checkPasswordAuthCode : 체크비밀번호인증코드
     @RequestMapping("/mpaUsr/member/modify")
-    public String showModify(HttpServletRequest req,  String modifyPrivateAuthCode) {
-
-        Member loginedMember = ((Rq) req.getAttribute("rq")).getLoginedMember();
-        ResultData checkValidModifyPrivateAuthCodeResultData = memberService
-                .checkValidModifyPrivateAuthCode(loginedMember.getId(), modifyPrivateAuthCode);
-
-        if ( checkValidModifyPrivateAuthCodeResultData.isFail() ) {
-            return Util.msgAndBack(req, checkValidModifyPrivateAuthCodeResultData.getMsg());
-        }
-
-        log.debug("checkValidModifyPrivateAuthCodeResultData : " + checkValidModifyPrivateAuthCodeResultData);
-
+    public String showModify(HttpServletRequest req) {
         return "mpaUsr/member/modify";
     }
 
     @RequestMapping("/mpaUsr/member/doModify")
     public String doModify(HttpServletRequest req, String loginPw, String name, String
-            nickname, String cellphoneNo, String email) {
+            nickname, String cellphoneNo, String email, String authKey) {
 
         if ( loginPw != null && loginPw.trim().length() == 0 ) {
             loginPw = null;
         }
 
         int id = ((Rq)req.getAttribute("rq")).getLoginedMemberId();
+    	if(!authKey.equals(memberService.getAuthKey(id))) {
+    		return Util.msgAndBack(req, authKey+"인증키가 일치하지 않습니다.");
+    	}
+
         ResultData modifyRd = memberService.modify(id, loginPw, name, nickname, cellphoneNo, email);
 
         if (modifyRd.isFail()) {
@@ -68,6 +64,9 @@ public class MpaUsrMemberController {
         if (loginedMember.getLoginPw().equals(loginPw) == false) {
             return Util.msgAndBack(req, "비밀번호가 일치하지 않습니다.");
         }
+        memberService.issueAuthKey(loginedMember.getId());
+        String authKey = memberService.getAuthKey(loginedMember.getId());
+        req.setAttribute("authKey", authKey);
 
         return "mpaUsr/member/modify";
     }

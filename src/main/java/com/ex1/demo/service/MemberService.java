@@ -1,5 +1,8 @@
 package com.ex1.demo.service;
 
+import java.util.Random;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,9 +14,6 @@ import com.ex1.demo.util.Util;
 
 @Service
 public class MemberService {
-	@Autowired
-    private AttrService attrService;
-
     @Autowired
     private MailService mailService;
 
@@ -70,12 +70,15 @@ public class MemberService {
 
         return new ResultData("S-1", "회원정보가 수정되었습니다.", "id", id);
     }
-    
-    public ResultData checkValidModifyPrivateAuthCode(int actorId, String checkPasswordAuthCode) {
-        if (attrService.getValue("member__" + actorId + "__extra__modifyPrivateAuthCode").equals(checkPasswordAuthCode)) {
-            return new ResultData("S-1", "유효한 키 입니다.");
-        }
 
-        return new ResultData("F-1", "유효하지 않은 키 입니다.");
-    }
+	public void issueAuthKey(int id) {
+        Random random = new Random();
+        String authKey = random.toString();
+        authKey = authKey.substring(authKey.lastIndexOf("@")+1);
+		memberDao.issueAuthKey(id, authKey);
+	}
+
+	public String getAuthKey(int id) {
+		return memberDao.getAuthKey(id);
+	}
 }

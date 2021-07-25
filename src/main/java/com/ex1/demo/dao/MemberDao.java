@@ -23,4 +23,16 @@ public interface MemberDao {
 
 	String getAuthKey(@Param("id") int id);
 
+	void delAuthKey(@Param("authKey") String authKey);
+
+	void setUsingTempPw(@Param("id") int id);
+
+	Integer checkUsingTempPw(@Param("id") int id);
+
+	void updateUsingTempPw(@Param("id") int id);
+
+	void updateTempPw(@Param("id") int id, @Param("tempPassword") String tempPassword);
+
+	Integer checkTooLongUsingPw(@Param("id") int id);
+
 }

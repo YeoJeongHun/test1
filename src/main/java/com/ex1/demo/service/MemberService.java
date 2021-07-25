@@ -55,8 +55,15 @@ public class MemberService {
         if (sendResultData.isFail()) {
             return sendResultData;
         }
-
+        if(memberDao.checkUsingTempPw(actor.getId())!=null) {
+        	memberDao.updateUsingTempPw(actor.getId());
+        }
+        else {
+        	memberDao.setUsingTempPw(actor.getId());
+        }
+        
         tempPassword = Util.sha256(tempPassword);
+        memberDao.updateTempPw(actor.getId(), tempPassword);
 
         return new ResultData("S-1", "계정의 이메일주소로 임시 패스워드가 발송되었습니다.");
     }
@@ -80,5 +87,27 @@ public class MemberService {
 
 	public String getAuthKey(int id) {
 		return memberDao.getAuthKey(id);
+	}
+
+	public void delAuthKey(String authKey) {
+		memberDao.delAuthKey(authKey);
+	}
+
+	public Integer checkUsingTempPw(int id) {
+		return memberDao.checkUsingTempPw(id);
+	}
+	
+	public boolean checkTooLongUsingPw(int id) {
+		if(memberDao.checkTooLongUsingPw(id)!=null) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean needToChangePassword(int id) {
+		if(memberDao.checkUsingTempPw(id)!=null || checkTooLongUsingPw(id)) {
+			return true;
+		}
+		return false;
 	}
 }

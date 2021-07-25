@@ -72,7 +72,7 @@ public class MailService {
             e.printStackTrace();
             return new ResultData("F-1", "메일이 실패하였습니다.");
         }
-
+        
         return new ResultData("S-1", "메일이 발송되었습니다.");
     }
 }

@@ -48,6 +48,8 @@ public class MpaUsrMemberController {
         if (modifyRd.isFail()) {
             return Util.msgAndBack(req, modifyRd.getMsg());
         }
+        //인증키 삭제하기
+        memberService.delAuthKey(authKey);
 
         return Util.msgAndReplace(req, modifyRd.getMsg(), "/");
     }
@@ -157,8 +159,11 @@ public class MpaUsrMemberController {
 
         //HttpSession session = req.getSession();
         session.setAttribute("loginedMemberId", member.getId());
-
+        
         String msg = "환영합니다.";
+        if(memberService.checkTooLongUsingPw(member.getId())) {
+        	msg = "현재 비밀번호를 사용한지 90일이 지났습니다. 비밀번호를 변경해주세요.";
+        }
         return Util.msgAndReplace(req, msg, redirectUri);
     }
 

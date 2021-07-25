@@ -34,6 +34,7 @@ function ArticleWrite__submitForm(form) {
 	<div class="container mx-auto">
 	    <form method="POST" action="doWrite" onsubmit="ArticleWrite__submitForm(this); return false;">
 	    	<input type="hidden" name="boardId" value="${board.id}" />
+	    	<input type="hidden" name="memberId" value="${rq.loginedMember.id}" />
 	        <div class="form-control">
                 <label class="label">
                     제목

@@ -30,13 +30,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/resource/**")
                 .excludePathPatterns("/error");
-
+        
         registry.addInterceptor(needToLoginInterceptor)
                 .addPathPatterns("/mpaUsr/article/write")
                 .addPathPatterns("/mpaUsr/article/doWrite")
                 .addPathPatterns("/mpaUsr/article/doDelete")
                 .addPathPatterns("/mpaUsr/article/modify")
                 .addPathPatterns("/mpaUsr/article/doModify")
+                .addPathPatterns("/mpaUsr/reply/doWrite")
+                .addPathPatterns("/mpaUsr/reply/doDelete")
+                .addPathPatterns("/mpaUsr/reply/modify")
+                .addPathPatterns("/mpaUsr/reply/doModify")
+                .addPathPatterns("/mpaUsr/reply/doDeleteAjax")
                 .addPathPatterns("/mpaUsr/member/modify")
                 .addPathPatterns("/mpaUsr/member/doModify")
                 .addPathPatterns("/mpaUsr/member/checkPassword")

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ex1.demo.dto.Article;
 import com.ex1.demo.dto.Board;
-import com.ex1.demo.dto.Rq;
+import com.ex1.demo.dto.Reply;
 import com.ex1.demo.dto.ResultData;
 import com.ex1.demo.service.ArticleService;
+import com.ex1.demo.service.ReplyService;
 import com.ex1.demo.util.Util;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +26,14 @@ public class MpaUsrArticleController {
 
     @Autowired
     private ArticleService articleService;
+    
+    @Autowired
+    private ReplyService replyService;
 
     @RequestMapping("/mpaUsr/article/detail")
     public String showDetail(HttpServletRequest req, int id) {
     	Article article = articleService.getForPrintArticleById(id);
+    	List<Reply> replies = replyService.getForPrintRepliesByRelTypeCodeAndRelId("article", id);
 
         if (article == null) {
             return Util.msgAndBack(req, id + "번 게시물이 존재하지 않습니다.");
@@ -36,6 +41,7 @@ public class MpaUsrArticleController {
 
         Board board = articleService.getBoardById(article.getBoardId());
 
+        req.setAttribute("replies", replies);
         req.setAttribute("article", article);
         req.setAttribute("board", board);
 

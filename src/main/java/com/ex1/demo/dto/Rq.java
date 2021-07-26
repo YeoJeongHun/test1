@@ -44,7 +44,7 @@ public class Rq {
         return Util.getUriEncoded(getCurrentUri());
     }
 
-    private String getCurrentUri() {
+    public String getCurrentUri() {
         return currentUri;
     }
 

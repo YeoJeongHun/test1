@@ -1,5 +1,9 @@
 package com.ex1.demo.util;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -15,7 +19,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -383,6 +390,44 @@ public class Util {
 
         } catch (Exception ex) {
             return "";
+        }
+    }
+    
+    public static boolean existsProfile(int id) {
+    	String targetDirPath = "C:/work/demo/file/profile/member__id__" + id + "/profileImg.jpg";
+        java.io.File targetDir = new java.io.File(targetDirPath);
+        
+        // 해당 유저 프로필 폴더에 이미지가 존재하는지 확인
+        if (targetDir.exists() == true) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static String getProfilePass(int id) {
+    	return "/file/profile/member__id__" + id + "/profileImg.jpg";
+    }
+    
+    //https://unknownyun.tistory.com/20     <<참고
+    public static void ImageResizeForProfileImg(String targetDirPath, String targetFilePath, int newWidth, int newHeigt) {
+        try{
+        	targetDirPath = targetDirPath + "/profileImg.jpg";
+            //String imgTargetPath= "C:/work/demo/file/test_resize.jpg";    // 새 이미지 파일명
+            String imgFormat = "jpg";                             // 새 이미지 포맷. jpg, gif 등
+            
+            // 원본 이미지 가져오기
+            Image image = ImageIO.read(new File(targetFilePath));
+             
+            Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_SMOOTH);
+  
+            // 새 이미지  저장하기
+            BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+            Graphics g = newImage.getGraphics();
+            g.drawImage(resizeImage, 0, 0, null);
+            g.dispose();
+            ImageIO.write(newImage, imgFormat, new File(targetDirPath));
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

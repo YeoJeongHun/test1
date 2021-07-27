@@ -14,7 +14,7 @@
             <div class="px-4 py-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     <a href="#" class="row-span-3 order-1">
-                        <img class="rounded-full" src="https://i.pravatar.cc/100?img=37" alt="">
+                        <img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="">
                     </a>
 
                     <a href="#" class="order-2 hover:underline">

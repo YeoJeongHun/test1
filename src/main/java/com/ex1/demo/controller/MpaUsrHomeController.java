@@ -37,6 +37,7 @@ public class MpaUsrHomeController {
 				
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
+			
 			req.setAttribute("test", multipartFile.getSize());
 			
 			String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
@@ -59,9 +60,10 @@ public class MpaUsrHomeController {
 	        } catch (IllegalStateException | IOException e) {
 	            return "mpaUsr/article/detail";
 	        }
+
+			Util.ImageResizeForProfileImg(targetDirPath, targetFilePath, 250,250);
 		}
 
-		
 		return "mpaUsr/home/main";
 	}
 

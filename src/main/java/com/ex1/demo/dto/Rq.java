@@ -63,4 +63,11 @@ public class Rq {
     private boolean isLoginPage() {
         return currentUrl.equals("/mpaUsr/member/login");
     }
+    
+    public String getWriterProfileImgUri() {
+    	if(Util.existsProfile(getLoginedMemberId())) {
+    		return Util.getProfilePass(getLoginedMemberId());
+    	}
+        return "/file/profile/기본이미지.jpg";
+    }
 }

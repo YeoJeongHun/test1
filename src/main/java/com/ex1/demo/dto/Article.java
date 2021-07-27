@@ -1,6 +1,6 @@
 package com.ex1.demo.dto;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.ex1.demo.util.Util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +37,9 @@ public class Article {
     }
     
     public String getWriterProfileImgUri() {
-        return "/file/test.jpg";
+    	if(Util.existsProfile(id)) {
+    		return Util.getProfilePass(id);
+    	}
+        return "/file/profile/기본이미지.jpg";
     }
 }

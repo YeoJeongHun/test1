@@ -462,11 +462,11 @@ public class Util {
         String targetFilePath = targetDirPath + "/" + targetFileName;
         
         //파일 선택을 안했을 경우
-        if(checkExistsProfileImg(targetDirPath)) {
-        	return "S-3";
+        if(existsProfile(id)&&multipartFile.getSize()<1) {
+        	return "S-3";	//기존에 이미 파일 존재함
         }
         else if(multipartFile.getSize()<1) {
-			return setBasicProfileImg(targetDirPath, id);
+			return setBasicProfileImg(targetDirPath, id);	//기본이미지로 셋팅해주기
 		}
 
         // 파일 생성(업로드된 파일을 지정된 경로롤 옮김)
@@ -511,11 +511,7 @@ public class Util {
             return "F-3";
         }
 	}
-    
-    public static boolean checkExistsProfileImg(String targetDirPath) {
-    	return true;
-    }
-    
+        
     @SuppressWarnings("null")
 	public static Map<String, Object> getImgInfo(MultipartRequest multipartRequest, int id) {
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();

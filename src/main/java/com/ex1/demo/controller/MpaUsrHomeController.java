@@ -69,4 +69,10 @@ public class MpaUsrHomeController {
 		return "mpaUsr/home/main";
 	}
 
+	@RequestMapping("/mpaUsr/home/test")
+	public String test(HttpServletRequest req, MultipartRequest multipartRequest) {
+		
+		return "mpaUsr/home/main";
+	}
+	
 }

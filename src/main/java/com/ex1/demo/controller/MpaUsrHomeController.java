@@ -34,13 +34,15 @@ public class MpaUsrHomeController {
 	public String uploadFile(HttpServletRequest req, MultipartRequest multipartRequest) {
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 		Member loginedMember = ((Rq) req.getAttribute("rq")).getLoginedMember();
+		MultipartFile multipartFile1 = fileMap.get("input__file");
+		req.setAttribute("testtest", multipartFile1.getSize());
 				
 		for (String fileInputName : fileMap.keySet()) {
-			MultipartFile multipartFile = fileMap.get(fileInputName);
+			MultipartFile multipartFile = fileMap.get("input__file");
 			
 			req.setAttribute("test", multipartFile.getSize());
 			
-			String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
+			//String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
 			
 			// 새 파일이 저장될 폴더(io파일) 객체 생성
 	        String targetDirPath = "C:/work/demo/file/profile/member__id__" + loginedMember.getId();
@@ -58,7 +60,7 @@ public class MpaUsrHomeController {
 	        try {
 	            multipartFile.transferTo(new File(targetFilePath));
 	        } catch (IllegalStateException | IOException e) {
-	            return "mpaUsr/article/detail";
+	            return "mpaUsr/home/main";
 	        }
 
 			Util.ImageResizeForProfileImg(targetDirPath, targetFilePath, 250,250);

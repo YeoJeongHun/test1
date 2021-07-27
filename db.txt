@@ -206,8 +206,32 @@ CREATE TABLE `reply` (
 # 인덱스를 건다.
 ALTER TABLE `reply` ADD KEY (`relTypeCode`, `relId`);
 
+CREATE TABLE imgFile(
+  regDate DATETIME DEFAULT NULL, # 작성날짜
+  updateDate DATETIME DEFAULT NULL, # 갱신날짜
+  delDate DATETIME DEFAULT NULL, # 삭제날짜
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, # 삭제상태(0:미삭제,1:삭제)
+  relTypeCode CHAR(50) NOT NULL, # 관련 데이터 타입(article, member)
+  relId INT(10) UNSIGNED NOT NULL, # 관련 데이터 번호
+  originFileName VARCHAR(100) NOT NULL, # 업로드 당시의 파uget일이름
+  fileExt CHAR(10) NOT NULL, # 확장자
+  fileSize INT(10) UNSIGNED NOT NULL, # 파일의 사이즈
+  fileDir CHAR(100) NOT NULL, # 파일이 저장되는 폴더명
+  PRIMARY KEY(relTypeCode, relId)
+);
 
-SELECT * FROM reply;
+
+SELECT *FROM imgFile;
+SELECT *FROM `member`;
+
+
+
+
+
+
+
+
+
 
 
 

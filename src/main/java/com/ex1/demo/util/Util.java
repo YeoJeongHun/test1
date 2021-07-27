@@ -3,7 +3,9 @@ package com.ex1.demo.util;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -23,7 +25,10 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import com.ex1.demo.dto.Member;
+import com.ex1.demo.dto.Rq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -408,6 +413,10 @@ public class Util {
     	return "/file/profile/member__id__" + id + "/profileImg.jpg";
     }
     
+    public static String getProfileDirPass(int id) {
+    	return "/file/profile/member__id__" + id;
+    }
+    
     //https://unknownyun.tistory.com/20     <<참고
     public static void ImageResizeForProfileImg(String targetDirPath, String targetFilePath, int newWidth, int newHeigt) {
         try{
@@ -430,5 +439,96 @@ public class Util {
             e.printStackTrace();
         }
     }
+    
+    public static String getUserProfileImg(HttpServletRequest req, MultipartRequest multipartRequest, int id) {
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+		
+		MultipartFile multipartFile = fileMap.get("input__file");
+		
+		if(multipartFile.getSize()>500000) {
+			return "F-2";
+		}
+		
+		// 새 파일이 저장될 폴더(io파일) 객체 생성
+	       String targetDirPath = "C:/work/demo/file/profile/member__id__" + id;
+	       java.io.File targetDir = new java.io.File(targetDirPath);
 
+        // 새 파일이 저장될 폴더가 존재하지 않는다면 생성
+        if (targetDir.exists() == false) {
+            targetDir.mkdirs();
+        }
+	        
+        String targetFileName = multipartFile.getOriginalFilename();
+        String targetFilePath = targetDirPath + "/" + targetFileName;
+        
+        //파일 선택을 안했을 경우
+        if(checkExistsProfileImg(targetDirPath)) {
+        	return "S-3";
+        }
+        else if(multipartFile.getSize()<1) {
+			return setBasicProfileImg(targetDirPath, id);
+		}
+
+        // 파일 생성(업로드된 파일을 지정된 경로롤 옮김)
+        try {
+            multipartFile.transferTo(new File(targetFilePath));
+        } catch (IllegalStateException | IOException e) {
+            return "F-4";
+        }
+        try {
+            Util.ImageResizeForProfileImg(targetDirPath, targetFilePath, 250,250);
+        } catch (IllegalStateException e) {
+            return "F-1";
+        }
+	        
+        return "S-1";
+	}
+    
+    public static String setBasicProfileImg(String targetDirPath, int id) {
+    	try{
+            String imgOriginalPath= "C:/work/demo/file/profile/basic.jpg";           // 기본 이미지 파일명
+            //String imgTargetPath= "C:/work/demo/file/test_resize.jpg";    // 새 이미지 파일명
+            String targetFilePath = targetDirPath + "/" + "profileImg.jpg";
+            String imgFormat = "jpg";                             // 새 이미지 포맷. jpg, gif 등
+            int newWidth = 250;                                  // 변경 할 넓이
+            int newHeigt = 250;      
+ 
+            // 원본 이미지 가져오기
+            Image image = ImageIO.read(new File(imgOriginalPath));
+               
+            Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_SMOOTH);
+  
+            // 새 이미지  저장하기
+            BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+            Graphics g = newImage.getGraphics();
+            g.drawImage(resizeImage, 0, 0, null);
+            g.dispose();
+            ImageIO.write(newImage, imgFormat, new File(targetFilePath));
+             
+            return "S-2";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "F-3";
+        }
+	}
+    
+    public static boolean checkExistsProfileImg(String targetDirPath) {
+    	return true;
+    }
+    
+    @SuppressWarnings("null")
+	public static Map<String, Object> getImgInfo(MultipartRequest multipartRequest, int id) {
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+		Map<String, Object> map = null;
+		for (String fileInputName : fileMap.keySet()) {
+			MultipartFile multipartFile = fileMap.get(fileInputName);
+			String targetFileName = multipartFile.getOriginalFilename();
+			map.put("originFileName", targetFileName);
+			map.put("fileExt", getFileExtFromFileName(multipartFile.getOriginalFilename()));
+			map.put("fileSize", multipartFile.getSize());
+			map.put("fileDir", getProfileDirPass(id));
+		}
+		return map;
+	}
+    
 }

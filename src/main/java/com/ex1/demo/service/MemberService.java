@@ -110,4 +110,15 @@ public class MemberService {
 		}
 		return false;
 	}
+
+	public void setImgFile(String action, String relTypeCode, int id, String originFileName, String fileExt, int fileSize,
+			String fileDir) {
+		if(action.equals("join")) {
+			memberDao.setImgFileJoin(relTypeCode, id, originFileName, fileExt, fileSize, fileDir);
+		}
+		else if(action.equals("modify")) {
+			memberDao.setImgFileModify(relTypeCode, id, originFileName, fileExt, fileSize, fileDir);
+		}
+		
+	}
 }

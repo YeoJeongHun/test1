@@ -1,5 +1,6 @@
 package com.ex1.demo.controller;
 
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.ex1.demo.dto.Member;
 import com.ex1.demo.dto.ResultData;
@@ -31,7 +34,7 @@ public class MpaUsrMemberController {
     }
 
     @RequestMapping("/mpaUsr/member/doModify")
-    public String doModify(HttpServletRequest req, String loginPw, String name, String
+    public String doModify(HttpServletRequest req, MultipartRequest multipartRequest, String loginPw, String name, String
             nickname, String cellphoneNo, String email, String authKey) {
 
         if ( loginPw != null && loginPw.trim().length() == 0 ) {
@@ -47,6 +50,27 @@ public class MpaUsrMemberController {
 
         if (modifyRd.isFail()) {
             return Util.msgAndBack(req, modifyRd.getMsg());
+        }
+        //프로필 이미지 수정
+        switch(Util.getUserProfileImg(req, multipartRequest, id)) {
+    		case "F-1" : return Util.msgAndBack(req, "프로필용 파일 전환에 실패했습니다. 마이페이지에서 다시 등록해주세요.");
+    		case "F-2" : return Util.msgAndBack(req, "프로필용 파일은 최대 50KB까지 입니다.");
+    		case "F-3" : return Util.msgAndBack(req, "기본 이미지 세팅 실패");
+    		case "F-4" : return Util.msgAndBack(req, "파일 업로드 실패");
+    		case "S-2" : memberService.setImgFile("modify", "member", id, "basic", "jpg", 44914, Util.getProfileDirPass(id));
+    			return Util.msgAndBack(req, "회원정보 수정 완료! 기본이미지로 프로필 설정");
+    		default : 
+        	String originFileName = null, fileExt = null, fileDir = null;
+        	int fileSize = 0;
+        	Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+    		for (String fileInputName : fileMap.keySet()) {
+    			MultipartFile multipartFile = fileMap.get(fileInputName);
+    			originFileName = multipartFile.getOriginalFilename();
+    			fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename());
+    			fileSize = (int)multipartFile.getSize();
+    			fileDir = Util.getProfileDirPass(id);
+        		memberService.setImgFile("modify", "member", id, originFileName, fileExt, fileSize, fileDir);
+    		}
         }
         //인증키 삭제하기
         memberService.delAuthKey(authKey);
@@ -67,8 +91,7 @@ public class MpaUsrMemberController {
             return Util.msgAndBack(req, "비밀번호가 일치하지 않습니다.");
         }
         memberService.issueAuthKey(loginedMember.getId());
-        String authKey = memberService.getAuthKey(loginedMember.getId());
-        req.setAttribute("authKey", authKey);
+        req.setAttribute("authKey", memberService.getAuthKey(loginedMember.getId()));
 
         return "mpaUsr/member/modify";
     }
@@ -173,7 +196,7 @@ public class MpaUsrMemberController {
     }
 
     @RequestMapping("/mpaUsr/member/doJoin")
-    public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
+    public String doJoin(HttpServletRequest req, MultipartRequest multipartRequest, String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
         Member oldMember = memberService.getMemberByLoginId(loginId);
 
         if (oldMember != null) {
@@ -185,7 +208,32 @@ public class MpaUsrMemberController {
         if (joinRd.isFail()) {
             return Util.msgAndBack(req, joinRd.getMsg());
         }
-
-        return Util.msgAndReplace(req, joinRd.getMsg(), "/");
+        
+        //프로필 이미지 설정
+        Map<String, Object> map = joinRd.getBody();
+        int id = (int)map.get("id");
+        String msg;
+        switch(Util.getUserProfileImg(req, multipartRequest, id)) {
+        	case "F-1" : msg = "프로필용 파일 전환에 실패했습니다. 마이페이지에서 다시 등록해주세요."; break;
+        	case "F-2" : msg = "프로필용 파일은 최대 50KB까지 입니다."; break;
+        	case "F-3" : msg = "기본 이미지 세팅 실패"; break;
+        	case "F-4" : msg = "파일 업로드 실패"; break;
+        	case "S-2" : memberService.setImgFile("join", "member", id, "basic", "jpg", 44914, Util.getProfileDirPass(id));
+				msg = "회원가입 완료! 기본이미지로 프로필 설정"; break;
+        	default : msg = joinRd.getMsg();
+            	String originFileName = null, fileExt = null, fileDir = null;
+            	int fileSize = 0;
+            	Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+        		for (String fileInputName : fileMap.keySet()) {
+        			MultipartFile multipartFile = fileMap.get(fileInputName);
+        			originFileName = multipartFile.getOriginalFilename();
+        			fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename());
+        			fileSize = (int)multipartFile.getSize();
+        			fileDir = Util.getProfileDirPass(id);
+            		memberService.setImgFile("join", "member", id, originFileName, fileExt, fileSize, fileDir);
+        		}
+        }
+        
+        return Util.msgAndReplace(req, msg, "/");
     }
 }

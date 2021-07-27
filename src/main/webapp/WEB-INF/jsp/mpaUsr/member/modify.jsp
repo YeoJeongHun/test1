@@ -65,17 +65,22 @@ function MemberModify__submitForm(form) {
 
 <div class="section section-member-modify px-2">
 	<div class="container mx-auto">
-	    <form method="POST" action="doModify" onsubmit="MemberModify__submitForm(this); return false;">
+	    <form method="POST" enctype="multipart/form-data" action="doModify" onsubmit="MemberModify__submitForm(this); return false;">
 	        <input type="hidden" name="loginPw">
 	        <div class="form-control">
                 <label class="label">
-                    로그인아이디${authKey}
+                    로그인아이디${testtest}
                 </label>
                 <div class="plain-text">
                   ${rq.loginedMember.loginId}
                 </div>
             </div>
-
+            <div class="form-control">
+                <label class="label">
+                    프로필 이미지
+                </label>
+				<input type="file" name="input__file" placeholder="프로필 이미지를 선택해주세요." />
+            </div>
             <div class="form-control">
                 <label class="label">
                     로그인비밀번호

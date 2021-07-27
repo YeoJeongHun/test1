@@ -65,10 +65,12 @@
                     </div>
 
                     <div class="mt-6">
-                        <span class="badge badge-outline">본문</span>
+                        <span class="badge badge-primary">작성자 프로필</span>
                         <div class="mt-3">
                             <img class="rounded" src="${article.getWriterProfileImgUri()}" alt="">
                         </div>
+                        <br/>
+                        <span class="badge badge-outline">본문</span>
                         <div class="mt-3">
                         	${article.bodyForPrint}    
                         </div>

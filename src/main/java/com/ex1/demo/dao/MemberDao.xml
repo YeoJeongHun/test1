@@ -118,7 +118,30 @@
 		SELECT id FROM
 		`member`
 		WHERE id=#{id}
-		AND NOW()>=DATE_ADD(updateDate, INTERVAL 30 MINUTE)
+		AND NOW()>=DATE_ADD(updateDate, INTERVAL 30
+		MINUTE)
 	</select>
+
+	<insert id="setImgFileJoin">
+		INSERT INTO imgFile
+		SET regDate=NOW(),
+		updateDate=NOW(),
+		relTypeCode=#{relTypeCode},
+		relId=#{id},
+		originFileName=#{originFileName},
+		fileExt=#{fileExt},
+		fileSize=#{fileSize},
+		fileDir=#{fileDir}
+	</insert>
+
+	<update id="setImgFileModify">
+		UPDATE imgFile
+		SET updateDate=NOW(),
+		originFileName=#{originFileName},
+		fileExt=#{fileExt},
+		fileSize=#{fileSize}
+		WHERE relTypeCode=#{relTypeCode}
+		AND relId=#{id}
+	</update>
 
 </mapper>

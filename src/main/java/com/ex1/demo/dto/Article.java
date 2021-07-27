@@ -42,4 +42,11 @@ public class Article {
     	}
         return "/file/profile/기본이미지.jpg";
     }
+    
+    public String getWriterProfileImgUriAtList() {
+    	if(Util.existsProfile(memberId)) {
+    		return Util.getProfilePass(memberId);
+    	}
+        return "/file/profile/기본이미지.jpg";
+    }
 }

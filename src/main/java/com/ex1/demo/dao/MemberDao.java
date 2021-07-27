@@ -35,4 +35,10 @@ public interface MemberDao {
 
 	Integer checkTooLongUsingPw(@Param("id") int id);
 
+	void setImgFileJoin(@Param("relTypeCode") String relTypeCode, @Param("id") int id, @Param("originFileName") String originFileName,
+			@Param("fileExt") String fileExt, @Param("fileSize") int fileSize, @Param("fileDir") String fileDir);
+	
+	void setImgFileModify(@Param("relTypeCode") String relTypeCode, @Param("id") int id, @Param("originFileName") String originFileName,
+			@Param("fileExt") String fileExt, @Param("fileSize") int fileSize, @Param("fileDir") String fileDir);
+
 }

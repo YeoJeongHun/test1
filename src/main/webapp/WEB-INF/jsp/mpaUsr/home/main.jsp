@@ -22,7 +22,7 @@
 	<br/>
 	<br/>
 	<br/>
-	결과 : ${test}
+	결과 : ${testtest}
 	
 	<div class="flex-shrink-0">
 		<img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="C:\Users\aofhd\OneDrive\바탕 화면\test.jpg">

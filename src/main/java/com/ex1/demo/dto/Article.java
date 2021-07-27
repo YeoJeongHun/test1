@@ -1,5 +1,7 @@
 package com.ex1.demo.dto;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +34,9 @@ public class Article {
         bodyForPrint = bodyForPrint.replaceAll("\n", "<br>");
 
         return bodyForPrint;
+    }
+    
+    public String getWriterProfileImgUri() {
+        return "/file/test.jpg";
     }
 }

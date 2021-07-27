@@ -1,8 +1,10 @@
 package com.ex1.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.ex1.demo.interceptor.BeforeActionInterceptor;
@@ -60,5 +62,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/mpaUsr/member/doFindLoginId")
                 .addPathPatterns("/mpaUsr/member/findLoginPw")
                 .addPathPatterns("/mpaUsr/member/doFindLoginPw");
+    }
+    
+    //테스트용
+    @Value("${custom.filePassUri}")
+    private String filePassUri;
+	
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/file/**").addResourceLocations("file:///" + filePassUri + "/")
+                .setCachePeriod(20);
     }
 }

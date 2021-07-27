@@ -67,7 +67,7 @@
                     <div class="mt-6">
                         <span class="badge badge-outline">본문</span>
                         <div class="mt-3">
-                            <img class="rounded" src="https://i.pravatar.cc/250?img=37" alt="">
+                            <img class="rounded" src="${article.getWriterProfileImgUri()}" alt="">
                         </div>
                         <div class="mt-3">
                         	${article.bodyForPrint}    

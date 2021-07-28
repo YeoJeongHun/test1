@@ -526,5 +526,10 @@ public class Util {
 		}
 		return map;
 	}
+
+	public static String deleteProfileImg(int id) {
+		String targetDirPath = "C:/work/demo/file/profile/member__id__" + id;
+		return setBasicProfileImg(targetDirPath, id);
+	}
     
 }

@@ -10,10 +10,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.ex1.demo.dto.Member;
+import com.ex1.demo.dto.Reply;
 import com.ex1.demo.dto.ResultData;
 import com.ex1.demo.dto.Rq;
 import com.ex1.demo.service.MemberService;
@@ -236,4 +238,18 @@ public class MpaUsrMemberController {
         
         return Util.msgAndReplace(req, msg, "/");
     }
+    
+    @RequestMapping("/mpaUsr/member/doDeleteProfileImgAjax")
+    @ResponseBody
+    public ResultData doDeleteProfileImgAjax(HttpServletRequest req, int id) {
+    	if(Util.deleteProfileImg(id).equals("S-2")){
+    		return new ResultData("S-2", "프로필 이미지가 기본이지미로 셋팅되었습니다.");
+    	}
+    	return ResultData("F-2", "프로필 이미지 셋팅 실패");
+    }
+
+	private ResultData ResultData(String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

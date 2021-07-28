@@ -61,6 +61,52 @@ function MemberModify__submitForm(form) {
     form.submit();
     MemberModify__submitFormDone = true;
 }
+
+function reset_profileImg(btn) {
+	const $clicked = $(btn);
+	const $target = $clicked.closest('[data-id]');
+	const id = $target.attr('data-id');
+	
+	$clicked.text('삭제중...');
+	
+	$.post(
+		'doDeleteProfileImgAjax',
+		{
+			id: id
+		},
+		function(data) {
+			if(data.success){
+				$target.remove();
+				resultHtml();
+			}
+			else{
+				if(data.msg){
+					alert(data.msg);
+				}
+				$clicked.text('삭제실패!!');
+			}
+		},
+		'json'
+	);
+	
+}
+
+function resultHtml(){
+	var html = "";
+	html+= "<span class='row-span-3 order-1' data-id='${rq.getLoginedMemberId()}'>";
+	html+= "<img class='rounded-full' src='${rq.getWriterProfileImgUri()}' alt='' style='float: left;'>";
+	html+= "<div>";
+	html+= "<br/><br/><br/><br/><br/><br/><br/><br/><br/>";
+	html+= "<a onclick='if ( confirm('정말 삭제하시겠습니까?') ) { reset_profileImg(this); } return false;' class='btn btn-sm mb-1'>";
+	html+= "<span><i class='fas fa-trash-alt'></i></span>";
+    html+= "&nbsp;";
+    html+="<span>프로필 이미지 삭제</span>";
+	html+="</a>";
+	html+="</div>";
+	html+="</span>";
+	$("#display").html(html);
+}
+
 </script>
 
 <div class="section section-member-modify px-2">
@@ -79,7 +125,22 @@ function MemberModify__submitForm(form) {
                 <label class="label">
                     프로필 이미지
                 </label>
-				<input type="file" name="input__file" placeholder="프로필 이미지를 선택해주세요." />
+                <div id="display">
+                <span class="row-span-3 order-1" data-id="${rq.getLoginedMemberId()}">
+                	<img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="" style="float: left;">
+                	<div>
+                		<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                		<a onclick="if ( confirm('정말 삭제하시겠습니까?') ) { reset_profileImg(this); } return false;" class="btn btn-sm mb-1">
+                    		<span><i class="fas fa-trash-alt"></i></span>
+                    		&nbsp;
+                    		<span>프로필 이미지 삭제</span>
+                		</a>
+                	</div>
+                </span>
+                </div>
+                <span class="">
+					<input type="file" name="input__file" placeholder="프로필 이미지를 선택해주세요." />
+                </span>
             </div>
             <div class="form-control">
                 <label class="label">

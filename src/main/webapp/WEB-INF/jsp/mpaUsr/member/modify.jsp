@@ -77,7 +77,6 @@ function reset_profileImg(btn) {
 		function(data) {
 			if(data.success){
 				$target.remove();
-				resultHtml();
 			}
 			else{
 				if(data.msg){

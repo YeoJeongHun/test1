@@ -6,9 +6,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -70,9 +70,17 @@ public class MpaUsrHomeController {
 	}
 
 	@RequestMapping("/mpaUsr/home/test")
-	public String test(HttpServletRequest req, MultipartRequest multipartRequest) {
-		
-		return "mpaUsr/home/main";
+	@ResponseBody
+	public String test(HttpServletRequest req) {
+		req.setAttribute("aa", "aa333");
+		return "aaaa";
+	}
+
+	@RequestMapping("/mpaUsr/home/test1")
+	@ResponseBody
+	public String test1(HttpServletRequest req, String name) {
+		req.setAttribute("aa", name);
+		return "[{\"이름\": \"여정훈입니다\"}]";
 	}
 	
 }

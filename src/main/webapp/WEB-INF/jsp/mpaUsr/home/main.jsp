@@ -32,19 +32,15 @@
 	<br/>
 	<br/>
 	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
 	---------------------------------------------------------------------------------------------------------------------------------------
 	
 	<h1> 123123 </h1>
 	<div id="testtest">
+		<br/>
 		ddddddddd
+		<br/>
+		${aa}33
+		<br/>
 	</div>
 	<script>
 		$("#testtest").click(function(){
@@ -56,6 +52,10 @@
 				success: function(data){
 					console.log(data);
 					alert('test성공' + data);
+					$.each(data, function(i, item){
+						$('#result').append('2ajax결과 value : '+ item + '<br/>');
+						$('#result').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\" \"alt=""\">');
+					})
 				},
 				error: function(request, data) {alert(request.responseText + data);}
 			}).done(function(data){
@@ -67,13 +67,14 @@
 		});
 	
 	</script>
-	<div id="results">
+	<div id="result">
 	</div>
-	${aa}
 	
 	<article>
 		
 	</article>
+	<br/>
+	---------------------------------------------------------------------------------------------------------------------------------------
 	
 	<input type="button" value="test" onclick="
 		fetch('test').then(function(response){
@@ -82,8 +83,6 @@
 		})
 	">
 	<br/>
-	<br/>
-	---------------------------------------------------------------------------------------------------------------------------------------
 	<img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="">
 	
 </div>

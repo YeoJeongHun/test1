@@ -2,6 +2,7 @@ package com.ex1.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,9 +79,12 @@ public class MpaUsrHomeController {
 
 	@RequestMapping("/mpaUsr/home/test1")
 	@ResponseBody
-	public String test1(HttpServletRequest req, String name) {
-		req.setAttribute("aa", name);
-		return "[{\"이름\": \"여정훈입니다\"}]";
+	public Map<String, Object> test1(HttpServletRequest req, String name) {
+		req.setAttribute("aa", "tttt");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("이름", "여정훈ㅁㅁㅁ");
+		
+		return map;
 	}
 	
 }

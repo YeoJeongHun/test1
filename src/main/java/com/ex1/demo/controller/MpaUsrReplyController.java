@@ -1,5 +1,8 @@
 package com.ex1.demo.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +87,30 @@ public class MpaUsrReplyController {
         ResultData writeResultData = replyService.write(relTypeCode, relId, memberId, body);
 
         return Util.msgAndReplace(req, writeResultData.getMsg(), redirectUri);
+    }
+    
+    @RequestMapping("/mpaUsr/reply/likeCheckAjax")
+    @ResponseBody
+    public Map<String, Object> likeCheckAjax(HttpServletRequest req, int id, String like) {
+    	Rq rq = (Rq)req.getAttribute("rq");
+    	int memberId = rq.getLoginedMemberId();
+    	int replyId = id;
+    	if(replyService.checkLikeTable(memberId)) {
+    		replyService.insertMember("reply", memberId, replyId);
+    	}
+    	if(like.equals("up")) {
+    		replyService.checkLike("reply", memberId, replyId);
+    	}
+    	else if(like.equals("down")) {
+    		replyService.checkDislike("reply", memberId, replyId);
+    	}
+    	
+    	Reply reply = replyService.getReplyById(replyId);
+    	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("likeCount", reply.getLikeCount());
+		map.put("dislikeCount", reply.getDislikeCount());
+		
+		return map;
     }
 }

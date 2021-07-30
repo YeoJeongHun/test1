@@ -1,5 +1,7 @@
 package com.ex1.demo.dto;
 
+import com.ex1.demo.util.Util;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +33,12 @@ public class Reply {
         bodyForPrint = bodyForPrint.replaceAll("\n", "<br>");
 
         return bodyForPrint;
+    }
+    
+    public String getWriterProfileImgUri() {
+    	if(Util.existsProfile(memberId)) {
+    		return Util.getProfilePass(memberId);
+    	}
+        return "/file/profile/기본이미지.jpg";
     }
 } 

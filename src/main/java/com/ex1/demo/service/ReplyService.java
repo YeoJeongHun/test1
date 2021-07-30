@@ -34,4 +34,35 @@ public class ReplyService {
 
         return new ResultData("S-1", id + "번 댓글이 삭제되었습니다.", "id", id);
     }
+
+	public void checkLike(String relTypeCode, int memberId, int replyId) {
+		String check = replyDao.getLike(relTypeCode, memberId, replyId);
+		if(check==null || check.equals("0")) {
+			replyDao.checkLike(relTypeCode, memberId, replyId);
+		}else {
+			replyDao.uncheckLike(relTypeCode, memberId, replyId);
+		}
+		replyDao.updateLikeCount(replyId);
+	}
+
+	public void checkDislike(String relTypeCode, int memberId, int replyId) {
+		String check = replyDao.getDislike(relTypeCode, memberId, replyId);
+		if(check==null || check.equals("0")) {
+			replyDao.checkDislike(relTypeCode, memberId, replyId);
+		}else {
+			replyDao.uncheckDislike(relTypeCode, memberId, replyId);
+		}
+		replyDao.updateLikeCount(replyId);
+	}
+
+	public boolean checkLikeTable(int memberId) {
+		if(replyDao.checkLikeTable(memberId)==null) {
+			return true;	//해당 멤버의 좋아요테이블이 없음
+		}
+		return false;
+	}
+
+	public void insertMember(String relTypeCode, int memberId, int replyId) {
+		replyDao.insertMember(relTypeCode, memberId, replyId);
+	}
 }

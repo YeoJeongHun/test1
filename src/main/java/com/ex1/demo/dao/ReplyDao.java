@@ -20,4 +20,22 @@ public interface ReplyDao {
 	Reply getReplyById(@Param("id") int id);
 
     void delete(@Param("id") int id);
+
+	void checkLike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	void uncheckLike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	String getLike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	void checkDislike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	void uncheckDislike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	String getDislike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	String checkLikeTable(@Param("memberId") int memberId);
+
+	void insertMember(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
+
+	void updateLikeCount(@Param("id") int id);
 }

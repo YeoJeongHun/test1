@@ -3,48 +3,148 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ex1.demo.dao.ReplyDao">
-    <select id="getLastInsertId" resultType="int">
-        SELECT LAST_INSERT_ID()
-    </select>
-    
-    <select id="getForPrintRepliesByRelTypeCodeAndRelId" resultType="Reply">
-        SELECT R.*,
-        IFNULL(M.nickname, "삭제된_회원") AS extra__writerName
-        FROM reply AS R
-        LEFT JOIN `member` AS M
-        ON R.memberId = M.id
-        WHERE R.relTypeCode = #{relTypeCode}
-        AND R.relId = #{relId}
-        AND R.delStatus = 0
-        ORDER BY R.id DESC
-    </select>
-    
-    <insert id="write">
-        INSERT INTO reply
-        SET regDate = NOW(),
-        updateDate = NOW(),
-        relTypeCode = #{relTypeCode},
-        relId = #{relId},
-        memberId = #{memberId},
-        body = #{body}
-    </insert>
-    
-    <select id="getReplyById" resultType="Reply">
-        SELECT R.*,
-        IFNULL(M.nickname, "삭제된_회원") AS extra__writerName
-        FROM reply AS R
-        LEFT JOIN `member` AS M
-        ON R.memberId = M.id
-        WHERE R.id = #{id}
-        AND R.delStatus = 0
-        ORDER BY R.id DESC
-    </select>
-    
-    <update id="delete">
-        UPDATE reply
-        SET delDate = NOW(),
-        delStatus = 1
-        WHERE id = #{id}
-    </update>
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
 
+	<select id="getForPrintRepliesByRelTypeCodeAndRelId"
+		resultType="Reply">
+		SELECT R.*,
+		IFNULL(M.nickname, "삭제된_회원") AS
+		extra__writerName
+		FROM reply AS R
+		LEFT JOIN `member` AS M
+		ON R.memberId =
+		M.id
+		WHERE R.relTypeCode = #{relTypeCode}
+		AND R.relId = #{relId}
+		AND
+		R.delStatus = 0
+		ORDER BY R.id DESC
+	</select>
+
+	<insert id="write">
+		INSERT INTO reply
+		SET regDate = NOW(),
+		updateDate =
+		NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		memberId =
+		#{memberId},
+		body = #{body}
+	</insert>
+
+	<select id="getReplyById" resultType="Reply">
+		SELECT R.*,
+		IFNULL(M.nickname, "삭제된_회원") AS extra__writerName
+		FROM reply AS R
+		LEFT
+		JOIN `member` AS M
+		ON R.memberId = M.id
+		WHERE R.id = #{id}
+		AND
+		R.delStatus = 0
+		ORDER BY R.id DESC
+	</select>
+
+	<update id="delete">
+		UPDATE reply
+		SET delDate = NOW(),
+		delStatus = 1
+		WHERE id
+		= #{id}
+	</update>
+
+	<select id="checkLikeTable" resultType="String">
+		SELECT memberId
+		FROM checkLike
+		WHERE memberId=#{memberId}
+	</select>
+
+	<insert id="insertMember">
+		INSERT INTO checkLike
+		SET memberId = #{memberId},
+		typeCode=#{typeCode},
+		typeId=#{replyId},
+		updateDateLike=NOW();
+	</insert>
+
+	<select id="getLike" resultType="String">
+		SELECT checkLike
+		FROM checkLike
+		WHERE memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
+	</select>
+
+	<update id="uncheckLike">
+		UPDATE checkLike
+		SET checkLike = 0
+		WHERE
+		memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
+	</update>
+
+	<update id="checkLike">
+		UPDATE checkLike
+		SET checkLike=1
+		WHERE
+		memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
+	</update>
+
+	<select id="getDislike" resultType="String">
+		SELECT checkDislike
+		FROM
+		checkLike
+		WHERE memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND
+		typeId=#{replyId}
+	</select>
+
+	<update id="uncheckDislike">
+		UPDATE checkLike
+		SET checkDislike = 0
+		WHERE
+		memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
+	</update>
+
+	<update id="checkDislike">
+		UPDATE checkLike
+		SET checkDislike=1
+		WHERE
+		memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
+	</update>
+
+	<update id="updateLikeCount">
+		UPDATE `reply`
+		SET likeCount=(SELECT COUNT(checkLike)
+		FROM checkLike WHERE
+		typeCode='reply' AND typeId=#{id} AND checkLike=1),
+		dislikeCount=(SELECT COUNT(checkDislike) FROM checkLike WHERE
+		typeCode='reply' AND
+		typeId=#{id} AND checkDislike=1)
+		WHERE id=#{id}
+	</update>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -93,7 +93,7 @@
                             <input type="hidden" name="relTypeCode" value="article" />
                             <input type="hidden" name="relId" value="${article.id}" />
                             <input type="hidden" name="redirectUri" value="${rq.currentUri}" />
-                            <img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=200">
+                            <img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="${rq.getWriterProfileImgUri()}">
 
                             <span class="absolute inset-y-0 right-0 flex items-center pr-6">
                                 <button type="submit" class="p-1 focus:outline-none focus:shadow-none hover:text-blue-500">
@@ -135,14 +135,80 @@
                 			'json'
                 		);
                 	}
+                	
+                	
+                	function like_click(btn){
+                		const $clicked = $(btn);
+                		const $target = $clicked.closest('[data-id]');
+                		const id = $target.attr('data-id');
+            			$.ajax({
+            				type: 'POST',
+            				url: '../reply/likeCheckAjax',
+            				data: { id : id ,
+            					like : "up"
+            					},
+            				dataType: 'json',
+            				success: function(data){
+                				alert('key값 결과 : ' + data.likeCount);
+                				alert('key값 결과 : ' + data.dislikeCount);
+            				},
+            				error: function(request, data) {alert(request.responseText + data);}
+            			}).fail(function(data){
+            				alert('요청에 실패했습니다.');
+            			});
+            		}
+                	function dislike_click(btn){
+                		const $clicked = $(btn);
+                		const $target = $clicked.closest('[data-id]');
+                		const id = $target.attr('data-id');
+            			$.ajax({
+            				type: 'POST',
+            				url: '../reply/likeCheckAjax',
+            				data: { id: id ,
+            					like: "down"
+            					},
+            				dataType: 'json',
+            				success: function(data){
+                				alert('key값 결과 : ' + data.likeCount);
+                				alert('key값 결과 : ' + data.dislikeCount);
+            				},
+            				error: function(request, data) {alert(id);}
+            			}).fail(function(data){
+            				alert('요청에 실패했습니다.');
+            			});
+            		}
+
+                	function testtest(btn){
+            			$.ajax({
+            				type: 'POST',
+            				url: 'test1',
+            				data: {name: "여정훈"},
+            				dataType: 'json',
+            				success: function(data){
+            					console.log(data);
+            					alert('test성공' + data);
+            					$.each(data, function(i, item){
+            						$('#result').append('2ajax결과 value : '+ item + '<br/>');
+            						$('#result').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\">');
+            					})
+            				},
+            				error: function(request, data) {alert(request.responseText + data);}
+            			}).done(function(data){
+            				alert('요청성공시 표현');
+            			}).fail(function(data){
+            				alert('요청실패시 표현');
+            			});
+
+            		}
                 </script>
                 <div>
+                <a onclick="testtest(this);" class="plain-link"> 테스트용 </a>
                     <c:forEach items="${replies}" var="reply">
                        <div data-id="${reply.id}" class="py-5 px-4">
                             <div class="flex">
                                 <!-- 아바타 이미지 -->
                                 <div class="flex-shrink-0">
-                                    <img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=200">
+                                    <img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="${reply.getWriterProfileImgUri()}">
                                 </div>
                                 <div class="flex-grow px-1">
                                     <div class="flex text-gray-400 text-light text-sm">
@@ -153,14 +219,20 @@
                                     <div class="break-all">
                                         ${reply.bodyForPrint}
                                     </div>
-                                    <div class="mt-1">
-                                        <span class="text-gray-400 cursor-pointer">
-                                            <span><i class="fas fa-thumbs-up"></i></span>
-                                            <span>5,600</span>
+                                    <div class="mt-1" id="like_set">
+                                    	<span id="resetting">
+                                        <span class="text-gray-400 cursor-pointer" id="like">
+                                            <span id="like_count">
+                                            <span><a onclick="like_click(this);"><i class="fas fa-thumbs-up"></i></a></span>
+                                            <span>${reply.likeCount}</span>
+                                            </span>
                                         </span>
-                                        <span class="ml-1 text-gray-400 cursor-pointer">
-                                            <span><i class="fas fa-thumbs-down"></i></span>
-                                            <span>5,600</span>
+                                        <span class="ml-1 text-gray-400 cursor-pointer" id="dislike">
+                                            <span id="dislike_count">
+                                            <span><a onclick="dislike_click(this);"><i class="fas fa-thumbs-down"></i></a></span>
+                                            <span>${reply.dislikeCount}</span>
+                                            </span>
+                                        </span>
                                         </span>
                                     </div>
                                 </div>

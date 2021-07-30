@@ -3,7 +3,6 @@ package com.ex1.demo.util;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -27,8 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import com.ex1.demo.dto.Member;
-import com.ex1.demo.dto.Rq;
+import com.ex1.demo.dto.ResultData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -466,7 +464,7 @@ public class Util {
         	return "S-3";	//기존에 이미 파일 존재함
         }
         else if(multipartFile.getSize()<1) {
-			return setBasicProfileImg(targetDirPath, id);	//기본이미지로 셋팅해주기
+			return setBasicProfileImg(targetDirPath);	//기본이미지로 셋팅해주기
 		}
 
         // 파일 생성(업로드된 파일을 지정된 경로롤 옮김)
@@ -484,7 +482,7 @@ public class Util {
         return "S-1";
 	}
     
-    public static String setBasicProfileImg(String targetDirPath, int id) {
+    public static String setBasicProfileImg(String targetDirPath) {
     	try{
             String imgOriginalPath= "C:/work/demo/file/profile/basic.jpg";           // 기본 이미지 파일명
             //String imgTargetPath= "C:/work/demo/file/test_resize.jpg";    // 새 이미지 파일명
@@ -529,7 +527,18 @@ public class Util {
 
 	public static String deleteProfileImg(int id) {
 		String targetDirPath = "C:/work/demo/file/profile/member__id__" + id;
-		return setBasicProfileImg(targetDirPath, id);
+		return setBasicProfileImg(targetDirPath);
 	}
-    
+
+    public String doDeleteProfileImgAjax(HttpServletRequest req, int id) {
+    	if(Util.deleteProfileImg(id).equals("S-2")){
+    		return "S-2";
+    	}
+    	return "F-2";
+    }
+	
+    public static String getBasicPass(int id) {
+    	String targetDirPath = "C:/work/demo/file/profile/member__id__" + id;
+    	return targetDirPath;
+    }
 }

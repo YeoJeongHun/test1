@@ -67,7 +67,7 @@ function reset_profileImg(btn) {
 	const $target = $clicked.closest('[data-id]');
 	const id = $target.attr('data-id');
 	
-	$clicked.text('삭제중...');
+	//$clicked.text('삭제중...');
 	
 	$.post(
 		'doDeleteProfileImgAjax',
@@ -76,7 +76,11 @@ function reset_profileImg(btn) {
 		},
 		function(data) {
 			if(data.success){
-				$target.remove();
+				//$target.remove();
+				alert('성공');
+				$('#profile_img').remove();
+				$('#renew').append('<img class=\"rounded-full\" src=\"${rq.getWriterProfileImgUri()}\" alt="" style=\"float: left;\" id=\"profile_img\"><br/>');
+				$('#renew').append('<input type=\"hidden\" name=\"resetImg\" value=\"true\">');
 			}
 			else{
 				if(data.msg){
@@ -88,6 +92,28 @@ function reset_profileImg(btn) {
 		'json'
 	);
 	
+}
+function reset_img(){
+	$('#profile_img').remove();
+	$('#input_rst').remove();
+	$('#renew').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\" alt="" style=\"float: left;\" id=\"profile_img\">');
+	$('#renew').append('<input type=\"hidden\" name=\"resetImg\" value=\"true\" id=\"input_rst\">');
+}
+
+function readImg(input){
+	if(input.files && input.files[0]){
+		var reader = new FileReader();
+		var img = document.getElementById('input_img');
+		reader.onload = function(e){
+			$('#profile_img').remove();
+			$('#input_rst').remove();
+			$('#renew').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\" alt="" style=\"float: left;\" id=\"profile_img\">');
+			$('#renew').append('<input type=\"hidden\" name=\"resetImg\" value=\"false\" id=\"input_rst\">');
+			$('#profile_img').attr('src',e.target.result);
+			$('#profile_img').attr('style', 'height: 250px; width: 250px');
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
 }
 
 function resultHtml(){
@@ -112,24 +138,24 @@ function resultHtml(){
 	<div class="container mx-auto">
 	    <form method="POST" enctype="multipart/form-data" action="doModify" onsubmit="MemberModify__submitForm(this); return false;">
 	        <input type="hidden" name="loginPw">
-	        <div class="form-control">
+	        <div class="form-control border w-1/4">
                 <label class="label">
-                    로그인아이디${testtest}
+                    로그인아이디
                 </label>
                 <div class="plain-text">
                   ${rq.loginedMember.loginId}
                 </div>
             </div>
             <div class="form-control">
+            <div class="border w-1/4">
                 <label class="label">
                     프로필 이미지
                 </label>
                 <div id="display">
                 <span class="row-span-3 order-1" data-id="${rq.getLoginedMemberId()}">
-                	<img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="" style="float: left;">
+                	<span id="renew"><img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="" style="float: left;" id="profile_img"></span>
                 	<div>
-                		<br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                		<a onclick="if ( confirm('정말 삭제하시겠습니까?') ) { reset_profileImg(this); } return false;" class="btn btn-sm mb-1">
+                		<a onclick="if ( confirm('정말 삭제하시겠습니까?') ) { reset_img(); } return false;" class="btn btn-sm mb-1">
                     		<span><i class="fas fa-trash-alt"></i></span>
                     		&nbsp;
                     		<span>프로필 이미지 삭제</span>
@@ -138,8 +164,9 @@ function resultHtml(){
                 </span>
                 </div>
                 <span class="">
-					<input type="file" name="input__file" placeholder="프로필 이미지를 선택해주세요." />
+					<input type="file" name="input__file" id="input_img" onchange="readImg(this);"/>
                 </span>
+            </div>
             </div>
             <div class="form-control">
                 <label class="label">

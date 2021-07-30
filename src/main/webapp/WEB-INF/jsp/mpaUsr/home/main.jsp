@@ -19,19 +19,6 @@
 		<span>전송!</span>
 	</button>
 </form>
-	
-	<br/>
-	<br/>
-	<br/>
-	결과 : ${testtest}
-	
-	<div class="flex-shrink-0">
-		<img class="w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer" alt="User avatar" src="C:\Users\aofhd\OneDrive\바탕 화면\test.jpg">
-	</div>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
 	---------------------------------------------------------------------------------------------------------------------------------------
 	
 	<h1> 123123 </h1>
@@ -54,7 +41,7 @@
 					alert('test성공' + data);
 					$.each(data, function(i, item){
 						$('#result').append('2ajax결과 value : '+ item + '<br/>');
-						$('#result').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\" \"alt=""\">');
+						$('#result').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\">');
 					})
 				},
 				error: function(request, data) {alert(request.responseText + data);}
@@ -69,30 +56,66 @@
 	</script>
 	<div id="result">
 	</div>
-	
-	<article>
-		
-	</article>
 	<br/>
 	---------------------------------------------------------------------------------------------------------------------------------------
+	<br/><br/><br/>
+	<div>
+		<h2><b>이미지 미리보기</b></h2>
+		<input type="file" id="input_img" onchange="readURL(this);"/>
+	</div>
+	<div>
+		<h2>결과 로드된 이미지 결과</h2>
+		<img class="rounded-full" id="img" />
+		<span id="ttt">abcd</span>
+	</div>
 	
-	<input type="button" value="test" onclick="
-		fetch('test').then(function(response){
-			console.log(response);
-			alert(response.url)
-		})
-	">
-	<br/>
-	<img class="rounded-full" src="${rq.getWriterProfileImgUri()}" alt="">
+	<script>
+		function readURL(input){
+			if(input.files && input.files[0]){
+				var reader = new FileReader();
+				var img = document.getElementById('input_img');
+				reader.onload = function(e){
+					$('#img').attr('src',e.target.result);
+					$('#img').attr('style', 'height: 150px; width: 150px');
+					$('#ttt').text('asdfasdf');
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		
+		function resize(obj){
+			var naturalWidth = obj.naturalWidth; // img 너비
+			var naturalHeight = obj.naturalHeight; // img 높이
+			var imgWidth = 150; // div 너비
+			var imgHeight = 150; // div 높이
+		// (img 너비 / div 너비) 와 (img 높이 / div 높이) 를 이용해 비율을 구한다.
+			if(Math.abs(naturalWidth / imgWidth) < Math.abs(naturalHeight / imgHeight)){
+		// 작게 나온 쪽으로 크기를 100% 맞춘다.
+				$(obj).css('width', '100%')
+				var fitHeight = $(obj).height();
+				$(obj).css('top', ((imgHeight - fitHeight) / 2) + 'px');
+				$(obj).css('left', '0');
+			}else{
+				$(obj).css('height', '100%')
+				var fitWidth = $(obj).width();
+				$(obj).css('top', '0');
+				$(obj).css('left', ((imgWidth - fitWidth) / 2) + 'px');
+			}
+		}
+	</script>
 	
-</div>
- 
-<script>
- 
-    // 테스트용 클릭
-    $("#testClick").click(function(){
-        alert("테스트 클릭 성공");
-    });
-</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 <%@ include file="../common/foot.jspf"%>

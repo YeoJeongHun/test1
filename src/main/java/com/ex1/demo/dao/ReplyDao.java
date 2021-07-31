@@ -33,7 +33,7 @@ public interface ReplyDao {
 
 	String getDislike(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
 
-	String checkLikeTable(@Param("memberId") int memberId);
+	String checkLikeTable(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
 
 	void insertMember(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
 

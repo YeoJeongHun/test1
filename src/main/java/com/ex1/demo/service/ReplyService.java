@@ -55,8 +55,8 @@ public class ReplyService {
 		replyDao.updateLikeCount(replyId);
 	}
 
-	public boolean checkLikeTable(int memberId) {
-		if(replyDao.checkLikeTable(memberId)==null) {
+	public boolean checkLikeTable(String relTypeCode, int memberId, int replyId) {
+		if(replyDao.checkLikeTable(relTypeCode, memberId, replyId)==null) {
 			return true;	//해당 멤버의 좋아요테이블이 없음
 		}
 		return false;

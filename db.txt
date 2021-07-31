@@ -221,48 +221,29 @@ CREATE TABLE imgFile(
 );
 
 CREATE TABLE checkLike(
+  id INT(10) PRIMARY KEY AUTO_INCREMENT,
   memberId INT(10),
   typeCode CHAR(20) NULL, # 관련 데이터 타입(article, reply)
   typeId INT(10) NULL,
-  checkLike TINYINT(1) NULL,
-  checkDislike TINYINT(1) NULL,
-  updateDateLike DATETIME NOT NULL,
-  PRIMARY KEY(memberId, typeCode, typeId)
+  checkLike TINYINT(1) DEFAULT 0,
+  checkDislike TINYINT(1) DEFAULT 0,
+  updateDateLike DATETIME NOT NULL
   );
   
-INSERT INTO checkLike
-SET memberId = 1,
-typeCode='reply',
-typeId=1,
-checkLike=1,
-updateDateLike=NOW();
-
-INSERT INTO checkLike
-SET memberId = 2,
-typeCode='reply',
-typeId=1,
-checkLike=1,
-updateDateLike=NOW();
-
-INSERT INTO checkLike
-SET memberId = 3,
-typeCode='reply',
-typeId=1,
-checkLike=1,
-updateDateLike=NOW();
-
-SELECT *FROM checkLike;
-
-UPDATE checkLike
-SET checkLike=0
-WHERE memberId=3
-AND typeCode='reply'
-AND typeId=1;
-
-SELECT checkLike
-FROM checkLike
-WHERE memberId=1
-AND typeCode='reply'
-AND typeId=1;
-
-
+  SELECT *FROM checkLike;
+  
+  SELECT *
+		FROM checkLike
+		WHERE memberId=2
+		AND typeCode='reply'
+		AND typeId=1;
+  
+  SELECT *FROM `reply`;
+  
+  
+  
+  
+  
+  
+  
+  

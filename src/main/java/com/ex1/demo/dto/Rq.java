@@ -7,6 +7,7 @@ import com.ex1.demo.util.Util;
 import lombok.Getter;
 
 public class Rq {
+    @Getter
     private String currentUrl;
     private String currentUri;
     private Member loginedMember;

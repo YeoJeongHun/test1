@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ex1.demo.dto.Article;
 import com.ex1.demo.dto.Board;
+import com.ex1.demo.dto.CheckLike;
 import com.ex1.demo.dto.Reply;
 import com.ex1.demo.dto.ResultData;
 import com.ex1.demo.service.ArticleService;
@@ -33,11 +34,12 @@ public class MpaUsrArticleController {
     @RequestMapping("/mpaUsr/article/detail")
     public String showDetail(HttpServletRequest req, int id) {
     	Article article = articleService.getForPrintArticleById(id);
-    	List<Reply> replies = replyService.getForPrintRepliesByRelTypeCodeAndRelId("article", id);
 
         if (article == null) {
             return Util.msgAndBack(req, id + "번 게시물이 존재하지 않습니다.");
         }
+    	List<Reply> replies = replyService.getForPrintRepliesByRelTypeCodeAndRelId("article", id);
+    	article.setRepliesCount(replies.size());
 
         Board board = articleService.getBoardById(article.getBoardId());
 

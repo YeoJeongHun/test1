@@ -26,6 +26,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
         Map<String, String> paramMap = Util.getParamMap(req);
+        boolean isAjax = false;
 
     	HttpSession session = req.getSession();
 
@@ -34,6 +35,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
         if (session.getAttribute("loginedMemberId") != null) {
             loginedMemberId = (int) session.getAttribute("loginedMemberId");
+            isAjax = true;
         }
 
         if (loginedMemberId != 0) {

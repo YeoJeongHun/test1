@@ -60,6 +60,8 @@
 		SELECT memberId
 		FROM checkLike
 		WHERE memberId=#{memberId}
+		AND typeCode=#{typeCode}
+		AND typeId=#{replyId}
 	</select>
 
 	<insert id="insertMember">

@@ -95,7 +95,7 @@ public class MpaUsrReplyController {
     	Rq rq = (Rq)req.getAttribute("rq");
     	int memberId = rq.getLoginedMemberId();
     	int replyId = id;
-    	if(replyService.checkLikeTable(memberId)) {
+    	if(replyService.checkLikeTable("reply", memberId, replyId)) {
     		replyService.insertMember("reply", memberId, replyId);
     	}
     	if(like.equals("up")) {

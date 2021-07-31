@@ -22,16 +22,18 @@
                     <div class="flex">
                         <span>
                             <span>Comments:</span>
-                            <span class="text-gray-400 text-light">30</span>
+                            <span class="text-gray-400 text-light">${article.repliesCount}</span>
                         </span>
                         <span class="ml-3">
                             <span>Views:</span>
-                            <span class="text-gray-400 text-light">60k</span>
+                            <span class="text-gray-400 text-light">${article.hitCount}</span>
                         </span>
                         <div class="flex-grow"></div>
                         <span>
+                        	<span class="far fa-star"></span>
+                        	<span class="fas fa-star"></span>
                             <span>Likes:</span>
-                            <span class="text-gray-400 text-light">120k</span>
+                            <span class="text-gray-400 text-light">${article.likeCount}</span>
                         </span>
                     </div>
 
@@ -134,8 +136,7 @@
                 			},
                 			'json'
                 		);
-                	}
-                	
+                	}                	
                 	
                 	function like_click(btn){
                 		const $clicked = $(btn);
@@ -149,12 +150,11 @@
             					},
             				dataType: 'json',
             				success: function(data){
-                				alert('key값 결과 : ' + data.likeCount);
-                				alert('key값 결과 : ' + data.dislikeCount);
+            					$('#like_count_view'+id).remove();
+            					$('#like_count_area'+id).append('<span id=\"like_count_view' + id + '\">'+ data.likeCount +'</span>');
             				},
-            				error: function(request, data) {alert(request.responseText + data);}
             			}).fail(function(data){
-            				alert('요청에 실패했습니다.');
+            				//alert('요청에 실패했습니다.');
             			});
             		}
                 	function dislike_click(btn){
@@ -169,12 +169,9 @@
             					},
             				dataType: 'json',
             				success: function(data){
-                				alert('key값 결과 : ' + data.likeCount);
-                				alert('key값 결과 : ' + data.dislikeCount);
+            					$('#dislike_count_view'+id).remove();
+            					$('#dislike_count_area'+id).append('<span id=\"dislike_count_view' + id + '\">'+ data.dislikeCount +'</span>');	
             				},
-            				error: function(request, data) {alert(id);}
-            			}).fail(function(data){
-            				alert('요청에 실패했습니다.');
             			});
             		}
 
@@ -224,13 +221,13 @@
                                         <span class="text-gray-400 cursor-pointer" id="like">
                                             <span id="like_count">
                                             <span><a onclick="like_click(this);"><i class="fas fa-thumbs-up"></i></a></span>
-                                            <span>${reply.likeCount}</span>
+                                            <span id="like_count_area${reply.id}"><span id="like_count_view${reply.id}">${reply.likeCount}</span></span>
                                             </span>
                                         </span>
                                         <span class="ml-1 text-gray-400 cursor-pointer" id="dislike">
                                             <span id="dislike_count">
                                             <span><a onclick="dislike_click(this);"><i class="fas fa-thumbs-down"></i></a></span>
-                                            <span>${reply.dislikeCount}</span>
+                                            <span id="dislike_count_area${reply.id}"><span id="dislike_count_view${reply.id}">${reply.dislikeCount}</span></span>
                                             </span>
                                         </span>
                                         </span>

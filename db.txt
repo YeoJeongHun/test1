@@ -231,19 +231,10 @@ CREATE TABLE checkLike(
   );
   
   SELECT *FROM checkLike;
+  SELECT *FROM article;
   
-  SELECT *
-		FROM checkLike
-		WHERE memberId=2
-		AND typeCode='reply'
-		AND typeId=1;
-  
-  SELECT *FROM `reply`;
-  
-  
-  
-  
-  
-  
+  UPDATE article
+  SET likeCount=(SELECT COUNT(*) FROM checkLike WHERE typeCode='article' AND typeId=4 AND checkLike=1)
+  WHERE id=4;
   
   

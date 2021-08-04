@@ -31,4 +31,18 @@ public interface ArticleDao {
 			@Param("limitFrom") int limitFrom, @Param("limitTake") int limitTake);
 	
 	Article getForPrintArticleById(@Param("id") int id);
+
+	int getArticleLikeCount(@Param("code") String code, @Param("articleId") int articleId);
+
+	int memberClickedLike(@Param("code") String code, @Param("articleId") int articleId, @Param("memberId") int memberId);
+
+	void setMemberClickLike(@Param("code") String code, @Param("articleId") int articleId, @Param("memberId") int memberId, @Param("checkLike") int checkLike);
+
+	int getClickLikeByMemberId(@Param("code") String code, @Param("id") int id, @Param("loginedMemberId") int loginedMemberId);
+
+	int searchClickLike(@Param("code") String code, @Param("articleId") int articleId, @Param("memberId") int memberId);
+
+	void insertClickLike(@Param("code") String code, @Param("articleId") int articleId, @Param("memberId") int memberId);
+
+	void recountArticleLike(@Param("articleId") int articleId);
 }

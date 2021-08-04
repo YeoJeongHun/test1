@@ -87,4 +87,32 @@ public class ArticleService {
 	public Article getForPrintArticleById(int id) {
 		return articleDao.getForPrintArticleById(id);
 	}
+
+	public int getArticleLikeCount(String code, int articleId) {
+		return articleDao.getArticleLikeCount(code, articleId);
+	}
+	
+	public int memberClickedLike(String code, int articleId, int memberId) {
+		if(articleDao.searchClickLike(code, articleId, memberId)>0) {
+			return memberClickedLike_sub(code, articleId, memberId);
+		}
+		articleDao.insertClickLike(code, articleId, memberId);
+		return memberClickedLike_sub(code, articleId, memberId);
+	}
+	
+	private int memberClickedLike_sub(String code, int articleId, int memberId) {
+		if(articleDao.memberClickedLike(code, articleId, memberId)>0) {
+			articleDao.setMemberClickLike(code, articleId, memberId, 0);
+			articleDao.recountArticleLike(articleId);
+			return 0;
+		}
+		articleDao.setMemberClickLike(code, articleId, memberId, 1);
+		articleDao.recountArticleLike(articleId);
+		return 1;
+	}
+
+	public int getClickLikeByMemberId(String code, int id, int loginedMemberId) {
+		return articleDao.getClickLikeByMemberId(code, id, loginedMemberId);
+	}
+	
 }

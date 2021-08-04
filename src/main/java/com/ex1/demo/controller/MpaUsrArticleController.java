@@ -1,8 +1,11 @@
 package com.ex1.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ex1.demo.dto.Article;
 import com.ex1.demo.dto.Board;
-import com.ex1.demo.dto.CheckLike;
+import com.ex1.demo.dto.Member;
 import com.ex1.demo.dto.Reply;
 import com.ex1.demo.dto.ResultData;
+import com.ex1.demo.dto.Rq;
 import com.ex1.demo.service.ArticleService;
 import com.ex1.demo.service.ReplyService;
 import com.ex1.demo.util.Util;
@@ -34,18 +38,25 @@ public class MpaUsrArticleController {
     @RequestMapping("/mpaUsr/article/detail")
     public String showDetail(HttpServletRequest req, int id) {
     	Article article = articleService.getForPrintArticleById(id);
+    	int loginedMemberId = 0;
+    	if(((Rq) req.getAttribute("rq")).isLogined()) {
+    		loginedMemberId = ((Rq) req.getAttribute("rq")).getLoginedMemberId();
+    	}
 
         if (article == null) {
             return Util.msgAndBack(req, id + "번 게시물이 존재하지 않습니다.");
         }
     	List<Reply> replies = replyService.getForPrintRepliesByRelTypeCodeAndRelId("article", id);
     	article.setRepliesCount(replies.size());
+    	
+    	int result = articleService.getClickLikeByMemberId("article", id, loginedMemberId);
 
         Board board = articleService.getBoardById(article.getBoardId());
 
         req.setAttribute("replies", replies);
         req.setAttribute("article", article);
         req.setAttribute("board", board);
+        req.setAttribute("result", result);
 
         return "mpaUsr/article/detail";
     }
@@ -178,5 +189,18 @@ public class MpaUsrArticleController {
         }
 
         return new ResultData("S-1", article.getId() + "번 글 입니다.", "article", article);
+    }
+    
+    @RequestMapping("/mpaUsr/article/articleLikeAjax")
+    @ResponseBody
+    public Map<String, Object> likeCheckAjax(HttpServletRequest req, int memberId, int articleId) {
+		int result = articleService.memberClickedLike("article", articleId, memberId);
+    	int articleLikeCount = articleService.getArticleLikeCount("article", articleId);
+    	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("likeCount", articleLikeCount);
+		map.put("result", result);
+		
+		return map;
     }
 }

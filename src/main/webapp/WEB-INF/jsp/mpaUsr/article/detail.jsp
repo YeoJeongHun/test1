@@ -7,6 +7,8 @@
 
 <%@ include file="../common/head.jspf"%>
 
+
+
 <div class="section section-article-detail">
 	<div class="container mx-auto">
 	    <div class="card bordered shadow-lg item-bt-1-not-last-child">
@@ -18,6 +20,34 @@
             </div>
             <div>
                 <h1 class="title-bar-type-2 px-4">상세내용</h1>
+                <script>
+				function article_like(btn){
+					var memberId = ${rq.getLoginedMemberId()};
+					var articleId = ${article.id};
+					$.ajax({
+						type: 'POST',
+						url: 'articleLikeAjax',
+						data: { memberId : memberId,
+							articleId : articleId
+							},
+						dataType: 'json',
+						success: function(data){
+        					$('#article_view').remove();
+        					$('#article_like_count').append("<span class=\"text-gray-400 text-light\" id=\"article_view\">"+ data.likeCount +"</span>");
+        					if(data.result==1){
+            					$('#like_view').remove();
+            					$('#like_star').append("<span class=\"fas fa-star\" id=\"like_view\"></span>");
+        					}
+        					else{
+            					$('#like_view').remove();
+            					$('#like_star').append("<span class=\"far fa-star\" id=\"like_view\"></span>");
+        					}
+						}
+					}).fail(function(data){
+					alert('로그인 후 이용해주세요.');
+					});
+				}
+				</script>
                 <div class="px-4 py-8">
                     <div class="flex">
                         <span>
@@ -29,11 +59,17 @@
                             <span class="text-gray-400 text-light">${article.hitCount}</span>
                         </span>
                         <div class="flex-grow"></div>
-                        <span>
-                        	<span class="far fa-star"></span>
-                        	<span class="fas fa-star"></span>
+                        <span >
+                        	<a onclick="article_like(this)"><span id="like_star">
+                        		<c:if test="${result eq 1}">
+                        			<span class="fas fa-star" id="like_view"></span>
+                        		</c:if>
+                        		<c:if test="${result eq 0}">
+                        			<span class="far fa-star" id="like_view"></span>
+                        		</c:if>
+                        	</span></a>
                             <span>Likes:</span>
-                            <span class="text-gray-400 text-light">${article.likeCount}</span>
+                            <span id="article_like_count"><span class="text-gray-400 text-light" id="article_view">${article.likeCount}</span></span>
                         </span>
                     </div>
 
@@ -154,7 +190,7 @@
             					$('#like_count_area'+id).append('<span id=\"like_count_view' + id + '\">'+ data.likeCount +'</span>');
             				},
             			}).fail(function(data){
-            				//alert('요청에 실패했습니다.');
+            				alert('로그인 후 이용해주세요.');
             			});
             		}
                 	function dislike_click(btn){
@@ -172,6 +208,8 @@
             					$('#dislike_count_view'+id).remove();
             					$('#dislike_count_area'+id).append('<span id=\"dislike_count_view' + id + '\">'+ data.dislikeCount +'</span>');	
             				},
+            			}).fail(function(data){
+            				alert('로그인 후 이용해주세요.');
             			});
             		}
 

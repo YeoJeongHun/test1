@@ -174,9 +174,27 @@
 
 	<update id="recountArticleLike">
 		UPDATE article
-		SET likeCount=(SELECT COUNT(*) FROM checkLike WHERE typeCode='article'
-		AND typeId=#{articleId} AND checkLike=1)
+		SET likeCount=(SELECT COUNT(*) FROM
+		checkLike WHERE typeCode='article'
+		AND typeId=#{articleId} AND
+		checkLike=1)
 		WHERE id=#{articleId}
 	</update>
+
+	<update id="doRevise">
+		UPDATE article
+		SET title=#{title},
+		body=#{body}
+		WHERE
+		id=#{articleId}
+		AND boardId=#{boardId}
+		AND memberId=#{memberId}
+	</update>
+
+	<select id="getMemberIdByArticleId" resultType="int">
+		SELECT memberId
+		FROM article
+		WHERE id= #{articleId}
+	</select>
 
 </mapper>

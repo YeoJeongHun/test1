@@ -237,4 +237,6 @@ CREATE TABLE checkLike(
   SET likeCount=(SELECT COUNT(*) FROM checkLike WHERE typeCode='article' AND typeId=4 AND checkLike=1)
   WHERE id=4;
   
+SELECT memberId FROM article
+WHERE id= 8;
   

@@ -114,5 +114,13 @@ public class ArticleService {
 	public int getClickLikeByMemberId(String code, int id, int loginedMemberId) {
 		return articleDao.getClickLikeByMemberId(code, id, loginedMemberId);
 	}
+
+	public void doRevise(int boardId, int memberId, int articleId, String title, String body) {
+		articleDao.doRevise(boardId, memberId, articleId, title, body);
+	}
+
+	public int getMemberIdByArticleId(int articleId) {
+		return articleDao.getMemberIdByArticleId(articleId);
+	}
 	
 }

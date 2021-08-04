@@ -113,6 +113,21 @@
                         	${article.bodyForPrint}    
                         </div>
                     </div>
+                    <c:if test="${article.memberId eq rq.getLoginedMemberId()}">
+                    <div style="float: right;">
+                        <div class="plain-link-wrap gap-3 mt-4">
+                        	<form method="POST" action="revise" class="plain-link" style="float: left;">
+                        		<input type="hidden" name="articleId" value="${article.id}">
+                            	<button type="submit"><span><i class="fas fa-edit"></i></span>
+                            	<span>수정</span></button>
+                            </form>
+                            <a onclick="if ( !confirm('삭제하시겠습니까?') ) return false;" class="plain-link" style="float: left;">
+                            	<span><i class="fas fa-trash"></i></span>
+                            	<span>삭제</span>
+                            </a>
+                        </div>
+                    </div>
+                    </c:if>
                 </div>
             </div>
 

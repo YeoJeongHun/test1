@@ -126,6 +126,11 @@
                                     <span>${article.extra__writerName}</span>
                                 </a>
 
+								<a href="${detailUri}" class="hover:underline">
+                                    <span class="badge">추천</span>
+                                    <span class="text-gray-600 text-light">${article.likeCount}</span>
+                                </a>
+
                                 <a href="${detailUri}" class="hover:underline">
                                     <span class="badge">등록날짜</span>
                                     <span class="text-gray-600 text-light">${article.regDate}</span>
@@ -144,20 +149,6 @@
                                 </a>
                             </div>
 
-                            <div class="plain-link-wrap gap-3 mt-4">
-                                <a href="${detailUri}" class="plain-link" title="자세히 보기">
-                                    <span><i class="fas fa-info"></i></span>
-                                    <span>자세히 보기</span>
-                                </a>
-                                <a href="#" class="plain-link">
-                                    <span><i class="fas fa-edit"></i></span>
-                                    <span>수정</span>
-                                </a>
-                                <a onclick="if ( !confirm('삭제하시겠습니까?') ) return false;" href="#" class="plain-link">
-                                    <span><i class="fas fa-trash"></i></span>
-                                    <span>삭제</span>
-                                </a>
-                            </div>
                         </div>
                         <hr />
                     </c:forEach>

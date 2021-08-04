@@ -40,6 +40,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/mpaUsr/article/modify")
                 .addPathPatterns("/mpaUsr/article/doModify")
                 .addPathPatterns("/mpaUsr/article/articleLikeAjax")
+                .addPathPatterns("/mpaUsr/article/revise")
+                .addPathPatterns("/mpaUsr/article/doRevise")
                 .addPathPatterns("/mpaUsr/reply/doWrite")
                 .addPathPatterns("/mpaUsr/reply/doDelete")
                 .addPathPatterns("/mpaUsr/reply/modify")

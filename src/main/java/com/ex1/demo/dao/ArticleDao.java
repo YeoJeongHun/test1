@@ -45,4 +45,8 @@ public interface ArticleDao {
 	void insertClickLike(@Param("code") String code, @Param("articleId") int articleId, @Param("memberId") int memberId);
 
 	void recountArticleLike(@Param("articleId") int articleId);
+
+	void doRevise(@Param("boardId") int boardId, @Param("memberId") int memberId, @Param("articleId") int articleId, @Param("title") String title, @Param("body") String body);
+
+	int getMemberIdByArticleId(@Param("articleId") int articleId);
 }

@@ -191,6 +191,34 @@ public class MpaUsrArticleController {
         return new ResultData("S-1", article.getId() + "번 글 입니다.", "article", article);
     }
     
+    @RequestMapping("/mpaUsr/article/revise")
+    public String reviseArticle(HttpServletRequest req, int articleId) {
+    	Article article = articleService.getArticleById(articleId);
+    	String body = article.getBody();
+    	String title = article.getTitle();
+    	int boardId = article.getBoardId();
+    	
+    	req.setAttribute("articleId", articleId);
+    	req.setAttribute("body", body);
+    	req.setAttribute("title", title);
+    	req.setAttribute("boardId", boardId);
+    	
+    	return "mpaUsr/article/revise";
+    }
+    
+    @RequestMapping("/mpaUsr/article/doRevise")
+    public String doRevise(HttpServletRequest req, int boardId, int memberId, int articleId, String title, String body) {
+    	int loginedMemberId = ((Rq) req.getAttribute("rq")).getLoginedMemberId();
+    	
+    	if(articleService.getMemberIdByArticleId(articleId)!=loginedMemberId) {
+    		return Util.msgAndBack(req, "작성자만 수정가능합니다.");
+    	}
+        articleService.doRevise(boardId, memberId, articleId, title, body);
+    	
+        String replaceUri = "detail?id=" + articleId;
+        return Util.msgAndReplace(req, "글이 수정되었습니다.", replaceUri);
+    }
+    
     @RequestMapping("/mpaUsr/article/articleLikeAjax")
     @ResponseBody
     public Map<String, Object> likeCheckAjax(HttpServletRequest req, int memberId, int articleId) {

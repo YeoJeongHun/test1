@@ -197,4 +197,25 @@
 		WHERE id= #{articleId}
 	</select>
 
+	<update id="setArticleViewCount">
+		UPDATE article
+		SET hitCount=(SELECT COUNT(*) FROM articleHitList WHERE articleId=#{articleId})
+		WHERE id=#{articleId}
+	</update>
+
+	<select id="checkClickView" resultType="int">
+		SELECT COUNT(*) FROM
+		articleHitList
+		WHERE articleId=#{articleId}
+		AND
+		memberId=#{loginedMemberId}
+	</select>
+
+	<insert id="setClickView">
+		INSERT INTO articleHitList
+		SET articleId=#{articleId},
+		memberId=#{loginedMemberId},
+		clickedDate=NOW()
+	</insert>
+
 </mapper>

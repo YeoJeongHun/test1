@@ -227,29 +227,6 @@
             				alert('로그인 후 이용해주세요.');
             			});
             		}
-
-                	function testtest(btn){
-            			$.ajax({
-            				type: 'POST',
-            				url: 'test1',
-            				data: {name: "여정훈"},
-            				dataType: 'json',
-            				success: function(data){
-            					console.log(data);
-            					alert('test성공' + data);
-            					$.each(data, function(i, item){
-            						$('#result').append('2ajax결과 value : '+ item + '<br/>');
-            						$('#result').append('<img class=\"rounded-full\" src=\"/file/profile/basic.jpg\">');
-            					})
-            				},
-            				error: function(request, data) {alert(request.responseText + data);}
-            			}).done(function(data){
-            				alert('요청성공시 표현');
-            			}).fail(function(data){
-            				alert('요청실패시 표현');
-            			});
-
-            		}
                 </script>
                 <div>
                 <a onclick="testtest(this);" class="plain-link"> 테스트용 </a>

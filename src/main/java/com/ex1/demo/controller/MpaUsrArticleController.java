@@ -37,12 +37,13 @@ public class MpaUsrArticleController {
 
     @RequestMapping("/mpaUsr/article/detail")
     public String showDetail(HttpServletRequest req, int id) {
-    	Article article = articleService.getForPrintArticleById(id);
     	int loginedMemberId = 0;
     	if(((Rq) req.getAttribute("rq")).isLogined()) {
     		loginedMemberId = ((Rq) req.getAttribute("rq")).getLoginedMemberId();
+    		articleService.clickView(id, loginedMemberId);
     	}
 
+    	Article article = articleService.getForPrintArticleById(id);
         if (article == null) {
             return Util.msgAndBack(req, id + "번 게시물이 존재하지 않습니다.");
         }

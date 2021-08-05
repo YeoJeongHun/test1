@@ -49,4 +49,10 @@ public interface ArticleDao {
 	void doRevise(@Param("boardId") int boardId, @Param("memberId") int memberId, @Param("articleId") int articleId, @Param("title") String title, @Param("body") String body);
 
 	int getMemberIdByArticleId(@Param("articleId") int articleId);
+
+	void setArticleViewCount(@Param("articleId") int articleId);
+
+	int checkClickView(@Param("articleId") int articleId, @Param("loginedMemberId") int loginedMemberId);
+
+	void setClickView(@Param("articleId") int articleId, @Param("loginedMemberId") int loginedMemberId);
 }

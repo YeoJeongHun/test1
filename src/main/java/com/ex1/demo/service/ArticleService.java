@@ -122,5 +122,12 @@ public class ArticleService {
 	public int getMemberIdByArticleId(int articleId) {
 		return articleDao.getMemberIdByArticleId(articleId);
 	}
+
+	public void clickView(int articleId, int loginedMemberId) {
+		if(articleDao.checkClickView(articleId, loginedMemberId)==0) {
+			articleDao.setClickView(articleId, loginedMemberId);
+			articleDao.setArticleViewCount(articleId);
+		}
+	}
 	
 }

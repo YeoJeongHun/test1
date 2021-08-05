@@ -199,12 +199,12 @@ CREATE TABLE `reply` (
     hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '조회수',
     repliesCount INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '댓글수',
     likeCount INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '좋아요수',
-    dislikeCount INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '싫어요수'
+    dislikeCount INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '싫어요수',
+    
+    CONSTRAINT aboutArticle FOREIGN KEY (relId) REFERENCES article(id)
+    ON DELETE CASCADE
 );
 
-# 특정 데이터에 관련된 댓글을 읽어는 속도를 빠르게 하기위해
-# 인덱스를 건다.
-ALTER TABLE `reply` ADD KEY (`relTypeCode`, `relId`);
 
 CREATE TABLE imgFile(
   regDate DATETIME DEFAULT NULL, # 작성날짜
@@ -230,37 +230,21 @@ CREATE TABLE checkLike(
   updateDateLike DATETIME NOT NULL
   );
   
-  SELECT *FROM article;
-  
-  UPDATE article
-  SET hitCount=1
-  WHERE id=1;
   
   CREATE TABLE articleHitList(
   id INT(10) PRIMARY KEY AUTO_INCREMENT,
-  articleId INT(10),
+  articleId INT(10) UNSIGNED NOT NULL,
   memberId INT(10),
-  clickedDate DATETIME NOT NULL
+  clickedDate DATETIME NOT NULL,
+  
+  CONSTRAINT aboutArticleHit FOREIGN KEY (articleId) REFERENCES article(id)
+    ON DELETE CASCADE
   );
   
-  SELECT COUNT(*) FROM articleHitList
-  WHERE articleId=1
-  AND memberId=1;
   
-  INSERT INTO articleHitList
-  SET articleId=2,
-  memberId=1,
-  clickedDate=NOW();
   
-  SELECT *FROM articleHitList;
   SELECT *FROM article;
-  
-  UPDATE article
-  SET hitCount=(SELECT COUNT(*) FROM articleHitList WHERE articleId=2)
-  WHERE id=2;
-  
-  
-  
+  SELECT *FROM `reply`;
   
   
   

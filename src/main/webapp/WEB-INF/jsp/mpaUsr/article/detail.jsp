@@ -6,9 +6,8 @@
 	value="<span><i class='far fa-clipboard'></i></span> <span>${board.name} ARTICLE DETAIL</span>" />
 
 <%@ include file="../common/head.jspf"%>
-
-
-
+<%@ include file="detail_script.jspf"%>
+<script src="https://unpkg.com/vue@next"></script>
 <div class="section section-article-detail">
 	<div class="container mx-auto">
 	    <div class="card bordered shadow-lg item-bt-1-not-last-child">
@@ -20,34 +19,6 @@
             </div>
             <div>
                 <h1 class="title-bar-type-2 px-4">상세내용</h1>
-                <script>
-				function article_like(btn){
-					var memberId = ${rq.getLoginedMemberId()};
-					var articleId = ${article.id};
-					$.ajax({
-						type: 'POST',
-						url: 'articleLikeAjax',
-						data: { memberId : memberId,
-							articleId : articleId
-							},
-						dataType: 'json',
-						success: function(data){
-        					$('#article_view').remove();
-        					$('#article_like_count').append("<span class=\"text-gray-400 text-light\" id=\"article_view\">"+ data.likeCount +"</span>");
-        					if(data.result==1){
-            					$('#like_view').remove();
-            					$('#like_star').append("<span class=\"fas fa-star\" id=\"like_view\"></span>");
-        					}
-        					else{
-            					$('#like_view').remove();
-            					$('#like_star').append("<span class=\"far fa-star\" id=\"like_view\"></span>");
-        					}
-						}
-					}).fail(function(data){
-					alert('로그인 후 이용해주세요.');
-					});
-				}
-				</script>
                 <div class="px-4 py-8">
                     <div class="flex">
                         <span>
@@ -161,77 +132,11 @@
                 </c:if>
 
                 <!-- 댓글 리스트 -->
-                <script>
-                	function ReplyList__deleteReply(btn) {
-                		const $clicked = $(btn);
-                		const $target = $clicked.closest('[data-id]');
-                		const id = $target.attr('data-id');
-                		
-                		$clicked.text('삭제중...');
-                		
-                		$.post(
-                			'../reply/doDeleteAjax',
-                			{
-                				id: id
-                			},
-                			function(data) {
-                				if(data.success){
-                					$target.remove();
-                				}
-                				else{
-                					if(data.msg){
-                						alert(data.msg);
-                					}
-                					$clicked.text('삭제실패!!');
-                				}
-                			},
-                			'json'
-                		);
-                	}                	
-                	
-                	function like_click(btn){
-                		const $clicked = $(btn);
-                		const $target = $clicked.closest('[data-id]');
-                		const id = $target.attr('data-id');
-            			$.ajax({
-            				type: 'POST',
-            				url: '../reply/likeCheckAjax',
-            				data: { id : id ,
-            					like : "up"
-            					},
-            				dataType: 'json',
-            				success: function(data){
-            					$('#like_count_view'+id).remove();
-            					$('#like_count_area'+id).append('<span id=\"like_count_view' + id + '\">'+ data.likeCount +'</span>');
-            				},
-            			}).fail(function(data){
-            				alert('로그인 후 이용해주세요.');
-            			});
-            		}
-                	function dislike_click(btn){
-                		const $clicked = $(btn);
-                		const $target = $clicked.closest('[data-id]');
-                		const id = $target.attr('data-id');
-            			$.ajax({
-            				type: 'POST',
-            				url: '../reply/likeCheckAjax',
-            				data: { id: id ,
-            					like: "down"
-            					},
-            				dataType: 'json',
-            				success: function(data){
-            					$('#dislike_count_view'+id).remove();
-            					$('#dislike_count_area'+id).append('<span id=\"dislike_count_view' + id + '\">'+ data.dislikeCount +'</span>');	
-            				},
-            			}).fail(function(data){
-            				alert('로그인 후 이용해주세요.');
-            			});
-            		}
-                </script>
-                <div>
-                <a onclick="testtest(this);" class="plain-link"> 테스트용 </a>
+                
+                
+                <div> 
                     <c:forEach items="${replies}" var="reply">
-                       <div data-id="${reply.id}" class="py-5 px-4">
+                       <div data-id="${reply.id}" data-body="${reply.bodyForPrint}" class="py-5 px-4">
                             <div class="flex">
                                 <!-- 아바타 이미지 -->
                                 <div class="flex-shrink-0">
@@ -243,8 +148,8 @@
                                         <span class="mx-1">·</span>
                                         <span>${reply.updateDate}</span>
                                     </div>
-                                    <div class="break-all">
-                                        ${reply.bodyForPrint}
+                                    <div class="break-all" id="reply_body_${reply.id}">
+                                        <span id="reply_body_view_${reply.id}">${reply.bodyForPrint}</span>
                                     </div>
                                     <div class="mt-1" id="like_set">
                                     	<span id="resetting">
@@ -264,10 +169,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="plain-link-wrap gap-3 mt-3 float-left pl-11">
+                                <c:if test="${reply.memberId == rq.loginedMemberId}">
+                                	<span id="modify_button_${reply.id}">
+                                	<span id="modify_button_view_${reply.id}">
+                                     <a onclick="reply_modify(this);" class="plain-link">
+                                        <span><i class="fas fa-edit"></i></span>
+                                        <span>수정</span>
+                                    </a>
+                                    </span>
+                                    </span>
+                                </c:if>
+                            </div>
                             <div class="plain-link-wrap gap-3 mt-3">
                                 <c:if test="${reply.memberId == rq.loginedMemberId}">
                                      <a onclick="if ( confirm('정말 삭제하시겠습니까?') ) { ReplyList__deleteReply(this); } return false;" class="plain-link">
-                                        <span><i class="fas fa-trash-alt"></i></span>
+                                        <span><i class="fas fa-trash-alt pl-4"></i></span>
                                         <span>글 삭제</span>
                                     </a>
                                 </c:if>

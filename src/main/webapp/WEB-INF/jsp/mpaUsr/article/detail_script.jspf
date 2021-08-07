@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script>
+function article_like(btn){
+	var memberId = ${rq.getLoginedMemberId()};
+	var articleId = ${article.id};
+	$.ajax({
+		type: 'POST',
+		url: 'articleLikeAjax',
+		data: { memberId : memberId,
+			articleId : articleId
+			},
+		dataType: 'json',
+		success: function(data){
+			$('#article_view').remove();
+			$('#article_like_count').append("<span class=\"text-gray-400 text-light\" id=\"article_view\">"+ data.likeCount +"</span>");
+			if(data.result==1){
+				$('#like_view').remove();
+				$('#like_star').append("<span class=\"fas fa-star\" id=\"like_view\"></span>");
+			}
+			else{
+				$('#like_view').remove();
+				$('#like_star').append("<span class=\"far fa-star\" id=\"like_view\"></span>");
+			}
+		}
+	}).fail(function(data){
+	alert('로그인 후 이용해주세요.');
+	});
+}
+	function ReplyList__deleteReply(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+
+		$clicked.text('삭제중...');
+
+		$.post('../reply/doDeleteAjax', {
+			id : id
+		}, function(data) {
+			if (data.success) {
+				$target.remove();
+			} else {
+				if (data.msg) {
+					alert(data.msg);
+				}
+				$clicked.text('삭제실패!!');
+			}
+		}, 'json');
+	}
+
+	function like_click(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		$.ajax(
+				{
+					type : 'POST',
+					url : '../reply/likeCheckAjax',
+					data : {
+						id : id,
+						like : "up"
+					},
+					dataType : 'json',
+					success : function(data) {
+						$('#like_count_view' + id).remove();
+						$('#like_count_area' + id).append(
+								'<span id=\"like_count_view' + id + '\">'
+										+ data.likeCount + '</span>');
+					},
+				}).fail(function(data) {
+			alert('로그인 후 이용해주세요.');
+		});
+	}
+	function dislike_click(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		$.ajax(
+				{
+					type : 'POST',
+					url : '../reply/likeCheckAjax',
+					data : {
+						id : id,
+						like : "down"
+					},
+					dataType : 'json',
+					success : function(data) {
+						$('#dislike_count_view' + id).remove();
+						$('#dislike_count_area' + id).append(
+								'<span id=\"dislike_count_view' + id + '\">'
+										+ data.dislikeCount + '</span>');
+					},
+				}).fail(function(data) {
+			alert('로그인 후 이용해주세요.');
+		});
+	}
+	function reply_modify(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		const body = $target.attr('data-body');
+
+		var tag = "";
+		tag += "<span id=\"reply_body_view_";
+                		tag += id;
+                		tag += "\">";
+		tag += "<form method=\"POST\" action=\"#\" class=\"relative flex py-4 text-gray-600 focus-within:text-gray-400\">";
+		tag += "<span class=\"absolute inset-y-0 right-0 flex items-center pr-6\">";
+		tag += "<button type=\"submit\" class=\"p-1 focus:outline-none focus:shadow-none hover:text-blue-500\">'";
+		tag += "<i class=\"fas fa-pen\"></i>";
+		tag += "</button>";
+		tag += "</span>";
+		tag += "<input name=\"body\" type=\"text\" class=\"w-full py-2 pl-4 pr-10 text-sm bg-gray-100 border border-transparent appearance-none rounded-tg placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue\" value=\"";
+        tag += body;
+        tag += "\" style=\"border-radius: 25px\" autocomplete=\"off\">";
+		tag += "</form>";
+		tag += "</span>";
+
+		$('#reply_body_view_' + id).remove();
+		$('#reply_body_' + id).append(tag);
+
+		tag = "";
+		tag += "<span id=\"modify_button_view_";
+        tag += id;
+        tag += "\">";
+		tag += "<a onclick=\"reply_modify_cancle(this);\" class=\"plain-link\">";
+		tag += "<span><i class=\"fas fa-edit\"></i></span>";
+		tag += "<span>수정 취소</span>";
+		tag += "</a>";
+		tag += "</span>";
+
+		$('#modify_button_view_' + id).remove();
+		$('#modify_button_' + id).append(tag);
+	}
+	function reply_modify_cancle(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		const body = $target.attr('data-body');
+
+		var tag = "";
+		tag += "<span id=\"reply_body_view_";
+        tag += id;
+        tag += "\">";
+		tag += body;
+		tag += "</span>";
+
+		$('#reply_body_view_' + id).remove();
+		$('#reply_body_' + id).append(tag);
+
+		tag = "";
+		tag += "<span id=\"modify_button_view_";
+        tag += id;
+        tag += "\">";
+		tag += "<a onclick=\"reply_modify(this);\" class=\"plain-link\">";
+		tag += "<span><i class=\"fas fa-edit\"></i></span>";
+		tag += "<span>수정</span>";
+		tag += "</a>";
+		tag += "</span>";
+
+		$('#modify_button_view_' + id).remove();
+		$('#modify_button_' + id).append(tag);
+	}
+</script>

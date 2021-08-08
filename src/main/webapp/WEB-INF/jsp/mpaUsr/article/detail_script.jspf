@@ -94,26 +94,82 @@ function article_like(btn){
 			alert('로그인 후 이용해주세요.');
 		});
 	}
+	
+	function doReplyModify(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		const body = $('#data-newBody_'+id).val();
+		var tag = "";
+		
+		$.ajax(
+				{
+					type : 'POST',
+					url : '../reply/doReplyModify',
+					data : {
+						replyId : id,
+						body : body
+					},
+					dataType : 'json',
+					success : function(data) {
+						if(data.result==0){
+							alert('수정 실패');
+						}
+							tag += "<span id=\"reply_body_view_";
+					        tag += id;
+					        tag += "\">";
+							tag += body;
+							tag += "</span>";
+
+							$('#reply_body_view_' + id).remove();
+							$('#reply_body_' + id).append(tag);
+
+							tag = "";
+							tag += "<span id=\"modify_button_view_";
+					        tag += id;
+					        tag += "\">";
+							tag += "<a onclick=\"reply_modify(this);\" class=\"plain-link\">";
+							tag += "<span><i class=\"fas fa-edit\"></i></span>";
+							tag += "<span>수정</span>";
+							tag += "</a>";
+							tag += "</span>";
+
+							$('#modify_button_view_' + id).remove();
+							$('#modify_button_' + id).append(tag);
+					},
+				}).fail(function(data) {
+			alert('수정 권한이 없습니다.');
+		});
+		return false;
+	}
+	
 	function reply_modify(btn) {
 		const $clicked = $(btn);
 		const $target = $clicked.closest('[data-id]');
 		const id = $target.attr('data-id');
-		const body = $target.attr('data-body');
+		const body = $('#reply_body_view_'+id).text();
 
 		var tag = "";
 		tag += "<span id=\"reply_body_view_";
-                		tag += id;
-                		tag += "\">";
-		tag += "<form method=\"POST\" action=\"#\" class=\"relative flex py-4 text-gray-600 focus-within:text-gray-400\">";
+       	tag += id;
+        tag += "\">";
+		tag += "<span id=\"replyForm_";
+		tag += id;
+		tag += "\" class=\"relative flex py-2 text-gray-600 focus-within:text-gray-400\">";
+		tag += "<input type=\"hidden\" name=\"replyId\" value=\"";
+		tag += id;
+		tag += "\">";
 		tag += "<span class=\"absolute inset-y-0 right-0 flex items-center pr-6\">";
 		tag += "<button type=\"submit\" class=\"p-1 focus:outline-none focus:shadow-none hover:text-blue-500\">'";
-		tag += "<i class=\"fas fa-pen\"></i>";
+		tag += "<i class=\"fas fa-pen\" onclick=\"doReplyModify(this);\"></i>";
 		tag += "</button>";
 		tag += "</span>";
-		tag += "<input name=\"body\" type=\"text\" class=\"w-full py-2 pl-4 pr-10 text-sm bg-gray-100 border border-transparent appearance-none rounded-tg placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue\" value=\"";
+		tag += "<input id=\"data-newBody_";
+		tag += id;
+		tag += "\" name=\"body\" type=\"text\" class=\"w-full py-2 pl-4 pr-10 text-sm bg-gray-100 border border-transparent appearance-none rounded-tg placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue\" value=\"";
         tag += body;
         tag += "\" style=\"border-radius: 25px\" autocomplete=\"off\">";
-		tag += "</form>";
+		tag += "</span>";
 		tag += "</span>";
 
 		$('#reply_body_view_' + id).remove();
@@ -136,7 +192,7 @@ function article_like(btn){
 		const $clicked = $(btn);
 		const $target = $clicked.closest('[data-id]');
 		const id = $target.attr('data-id');
-		const body = $target.attr('data-body');
+		const body = $('#data-newBody_'+id).val();
 
 		var tag = "";
 		tag += "<span id=\"reply_body_view_";

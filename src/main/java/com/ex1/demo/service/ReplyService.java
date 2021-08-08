@@ -65,4 +65,8 @@ public class ReplyService {
 	public void insertMember(String relTypeCode, int memberId, int replyId) {
 		replyDao.insertMember(relTypeCode, memberId, replyId);
 	}
+
+	public void doReplyModify(int replyId, String body) {
+		replyDao.doReplyModify(replyId, body);
+	}
 }

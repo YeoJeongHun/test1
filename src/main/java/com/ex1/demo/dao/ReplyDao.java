@@ -38,4 +38,6 @@ public interface ReplyDao {
 	void insertMember(@Param("typeCode") String typeCode, @Param("memberId") int memberId,@Param("replyId") int replyId);
 
 	void updateLikeCount(@Param("id") int id);
+
+	void doReplyModify(@Param("replyId") int replyId, @Param("body") String body);
 }

@@ -58,10 +58,12 @@
 
 	<select id="checkLikeTable" resultType="String">
 		SELECT memberId
-		FROM checkLike
+		FROM
+		checkLike
 		WHERE memberId=#{memberId}
 		AND typeCode=#{typeCode}
-		AND typeId=#{replyId}
+		AND
+		typeId=#{replyId}
 	</select>
 
 	<insert id="insertMember">
@@ -77,7 +79,8 @@
 		FROM checkLike
 		WHERE memberId=#{memberId}
 		AND typeCode=#{typeCode}
-		AND typeId=#{replyId}
+		AND
+		typeId=#{replyId}
 	</select>
 
 	<update id="uncheckLike">
@@ -130,11 +133,21 @@
 		UPDATE `reply`
 		SET likeCount=(SELECT COUNT(checkLike)
 		FROM checkLike WHERE
-		typeCode='reply' AND typeId=#{id} AND checkLike=1),
-		dislikeCount=(SELECT COUNT(checkDislike) FROM checkLike WHERE
+		typeCode='reply' AND typeId=#{id} AND
+		checkLike=1),
+		dislikeCount=(SELECT COUNT(checkDislike) FROM checkLike
+		WHERE
 		typeCode='reply' AND
 		typeId=#{id} AND checkDislike=1)
-		WHERE id=#{id}
+		WHERE
+		id=#{id}
+	</update>
+
+	<update id="doReplyModify">
+		UPDATE `reply`
+		SET `body`=#{body},
+		updateDate=NOW()
+		WHERE id=#{replyId}
 	</update>
 </mapper>
 

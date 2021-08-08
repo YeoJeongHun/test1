@@ -89,6 +89,27 @@ public class MpaUsrReplyController {
         return Util.msgAndReplace(req, writeResultData.getMsg(), redirectUri);
     }
     
+    @RequestMapping("/mpaUsr/reply/doReplyModify")
+    @ResponseBody
+    public Map<String, Object> doReplyModify(HttpServletRequest req, int replyId, String body) {
+        Rq rq = (Rq)req.getAttribute("rq");
+        int memberId = rq.getLoginedMemberId();
+        Reply reply = replyService.getReplyById(replyId);
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        if(memberId != reply.getMemberId()) {
+            map.put("result", 0);
+            return map;
+        }
+        
+        replyService.doReplyModify(replyId, body);
+        
+        map.put("result", 1);
+        map.put("body", body);
+
+        return map;
+    }
+    
     @RequestMapping("/mpaUsr/reply/likeCheckAjax")
     @ResponseBody
     public Map<String, Object> likeCheckAjax(HttpServletRequest req, int id, String like) {

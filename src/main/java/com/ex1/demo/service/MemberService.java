@@ -121,4 +121,12 @@ public class MemberService {
 		}
 		
 	}
+
+	public void doWithdrawal(int loginedMemberId) {
+		memberDao.doWithdrawal(loginedMemberId);
+	}
+
+	public Member checkWithDrawal(String loginId) {
+		return memberDao.checkWithDrawal(loginId);
+	}
 }

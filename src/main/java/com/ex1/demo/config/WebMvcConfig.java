@@ -49,6 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/mpaUsr/reply/doDeleteAjax")
                 .addPathPatterns("/mpaUsr/reply/likeCheckAjax")
                 .addPathPatterns("/mpaUsr/member/modify")
+                .addPathPatterns("/mpaUsr/member/withdrawal")
                 .addPathPatterns("/mpaUsr/member/doModify")
                 .addPathPatterns("/mpaUsr/member/checkPassword")
                 .addPathPatterns("/mpaUsr/member/doCheckPassword");

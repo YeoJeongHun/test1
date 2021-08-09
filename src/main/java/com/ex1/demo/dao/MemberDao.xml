@@ -7,7 +7,6 @@
 		FROM `member`
 		AS M
 		WHERE M.loginId = #{loginId}
-		AND M.delStatus = 0
 	</select>
 
 	<select id="getMemberById" resultType="Member">
@@ -15,6 +14,13 @@
 		FROM `member` AS M
 		WHERE M.id = #{id}
 		AND M.delStatus = 0
+	</select>
+	
+	<select id="checkWithDrawal" resultType="Member">
+		SELECT *
+		FROM `member` AS M
+		WHERE M.loginId = #{loginId}
+		AND M.delStatus = 1
 	</select>
 
 	<select id="getLastInsertId" resultType="int">
@@ -142,6 +148,13 @@
 		fileSize=#{fileSize}
 		WHERE relTypeCode=#{relTypeCode}
 		AND relId=#{id}
+	</update>
+
+	<update id="doWithdrawal">
+		UPDATE `member`
+		SET delStatus=1,
+		delDate=NOW()
+		WHERE id=#{loginedMemberId}
 	</update>
 
 </mapper>

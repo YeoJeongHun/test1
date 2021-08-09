@@ -87,7 +87,7 @@
                 <input value="${rq.loginedMember.email}" class="input input-bordered w-full" type="email" maxlength="50" name="email" placeholder="이메일을 입력해주세요." />
             </div>
 
-            <div class="mt-4 btn-wrap gap-1">
+            <div class="mt-4 btn-wrap gap-1 float-left">
                 <button type="submit" href="#" class="btn btn-primary btn-sm mb-1">
                     <span><i class="fas fa-user-plus"></i></span>
                     &nbsp;
@@ -105,6 +105,14 @@
                     &nbsp;
                     <span>홈</span>
                 </a>
+            </div>
+            <div class="mt-4 btn-wrap gap-1 float-right">
+            	<a onclick="if ( !confirm('삭제하시겠습니까?') ) return false;" href="../member/withdrawal" class="btn btn-link btn-sm mb-1">
+            		<span>
+           			<i class="fas fa-trash"></i>
+            		<span>회원 탈퇴</span>
+           			</span>
+      			</a>
             </div>
             <input type="hidden" name="authKey" value="${authKey}">
 	    </form>

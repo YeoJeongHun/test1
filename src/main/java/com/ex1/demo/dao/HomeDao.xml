@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ex1.demo.dao.HomeDao">
+	<select id="recentArticlesInNotice" resultType="Article">
+		SELECT *FROM
+		article
+		WHERE boardId=1
+		ORDER BY id DESC
+		LIMIT 10;
+	</select>
+
+	<select id="topArticlesInNotice" resultType="Article">
+		SELECT *FROM article
+		WHERE boardId=1
+		ORDER BY hitCount DESC, id DESC
+		LIMIT 10;
+	</select>
+
+	<select id="recentArticlesInFree" resultType="Article">
+		SELECT *FROM
+		article
+		WHERE boardId=2
+		ORDER BY id DESC
+		LIMIT 10;
+	</select>
+
+	<select id="topArticlesInFree" resultType="Article">
+		SELECT *FROM article
+		WHERE boardId=2
+		ORDER BY hitCount DESC, id DESC
+		LIMIT 10;
+	</select>
+</mapper>

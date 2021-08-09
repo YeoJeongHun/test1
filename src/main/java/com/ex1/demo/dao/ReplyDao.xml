@@ -35,6 +35,13 @@
 		body = #{body}
 	</insert>
 
+	<update id="updateReplyCount">
+		UPDATE article
+		SET repliesCount=(SELECT COUNT(*) FROM reply WHERE relTypeCode=#{relTypeCode}
+		AND relId=#{relId} AND delStatus=0)
+		WHERE id=#{relId}
+	</update>
+
 	<select id="getReplyById" resultType="Reply">
 		SELECT R.*,
 		IFNULL(M.nickname, "삭제된_회원") AS extra__writerName

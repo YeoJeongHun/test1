@@ -17,6 +17,7 @@ public class ReplyService {
     public ResultData write(String relTypeCode, int relId, int memberId, String body) {
         replyDao.write(relTypeCode, relId, memberId, body);
         int id = replyDao.getLastInsertId();
+        replyDao.updateReplyCount(relTypeCode, relId);
 
         return new ResultData("S-1", "댓글이 작성되었습니다.", "id", id);
     }
@@ -29,8 +30,9 @@ public class ReplyService {
         return replyDao.getReplyById(id);
     }
 
-    public ResultData delete(int id) {
+    public ResultData delete(int id, int relId) {
         replyDao.delete(id);
+        replyDao.updateReplyCount("article", relId);
 
         return new ResultData("S-1", id + "번 댓글이 삭제되었습니다.", "id", id);
     }

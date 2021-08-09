@@ -40,4 +40,6 @@ public interface ReplyDao {
 	void updateLikeCount(@Param("id") int id);
 
 	void doReplyModify(@Param("replyId") int replyId, @Param("body") String body);
+
+	void updateReplyCount(@Param("relTypeCode") String relTypeCode, @Param("relId") int relId);
 }

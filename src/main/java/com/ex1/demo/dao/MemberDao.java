@@ -41,4 +41,8 @@ public interface MemberDao {
 	void setImgFileModify(@Param("relTypeCode") String relTypeCode, @Param("id") int id, @Param("originFileName") String originFileName,
 			@Param("fileExt") String fileExt, @Param("fileSize") int fileSize, @Param("fileDir") String fileDir);
 
+	void doWithdrawal(@Param("loginedMemberId") int loginedMemberId);
+
+	Member checkWithDrawal(@Param("loginId") String loginId);
+
 }

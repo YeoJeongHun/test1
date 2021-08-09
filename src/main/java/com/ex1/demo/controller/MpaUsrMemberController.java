@@ -194,6 +194,11 @@ public class MpaUsrMemberController {
 		if (member == null) {
 			return Util.msgAndBack(req, loginId + "(은)는 존재하지 않는 로그인아이디 입니다.");
 		}
+		Member withDrawalId = memberService.checkWithDrawal(loginId);
+
+		if (withDrawalId != null) {
+			return Util.msgAndBack(req, loginId + "(은)는 탈퇴한 회원입니다.");
+		}
 
 		if (member.getLoginPw().equals(loginPw) == false) {
 			return Util.msgAndBack(req, "비밀번호가 일치하지 않습니다.");
@@ -267,13 +272,16 @@ public class MpaUsrMemberController {
 
 		return Util.msgAndReplace(req, msg, "/");
 	}
-
-//    @RequestMapping("/mpaUsr/member/doDeleteProfileImgAjax")
-//    @ResponseBody
-//    public ResultData doDeleteProfileImgAjax(HttpServletRequest req, int id) {
-//    	if(Util.deleteProfileImg(id).equals("S-2")){
-//    		return new ResultData("S-2", "프로필 이미지가 기본이지미로 셋팅되었습니다.");
-//    	}
-//    	return ResultData("F-2", "프로필 이미지 셋팅 실패");
-//    }
+	
+	@RequestMapping("/mpaUsr/member/withdrawal")
+	public String withdrawal(HttpServletRequest req) {
+		int loginedMemberId = ((Rq) req.getAttribute("rq")).getLoginedMemberId();
+		memberService.doWithdrawal(loginedMemberId);
+		
+		return Util.msgAndReplace(req, "정상적으로 탈퇴 처리 되었습니다.", "/");
+	}
+	
+	
+	
+	
 }

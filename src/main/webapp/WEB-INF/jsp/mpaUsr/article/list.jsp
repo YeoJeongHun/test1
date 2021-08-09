@@ -64,11 +64,9 @@
 		<div class="articles">
 			<div class="card bordered shadow-lg">
                 <div class="card-title">
-                    <a href="javascript:history.back();" class="cursor-pointer">
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
                     <span>게시물 리스트</span>
                 </div>
+                <br/>
 
                 <div class="grid gap-3 px-4 pt-4">
                     <div class="total-items">
@@ -110,7 +108,7 @@
                                     ${article.title}
                                 </div>
                             </a>
-
+	
                             <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                                 <a href="${detailUri}" class="row-span-7">
                                     <img class="rounded" src="${article.getWriterProfileImgUriAtList()}" alt="">

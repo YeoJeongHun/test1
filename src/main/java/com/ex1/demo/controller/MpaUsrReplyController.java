@@ -43,7 +43,7 @@ public class MpaUsrReplyController {
             return new ResultData("F-1", "권한이 없습니다.");
         }
 
-        replyService.delete(id);
+        replyService.delete(id, reply.getRelId());
 
         return new ResultData("S-1", String.format("%d번 댓글이 삭제되었습니다.", id));
     }
@@ -62,7 +62,7 @@ public class MpaUsrReplyController {
             return Util.msgAndBack(req, "권한이 없습니다.");
         }
 
-        ResultData deleteResultData = replyService.delete(id);
+        ResultData deleteResultData = replyService.delete(id, reply.getRelId());
 
         return Util.msgAndReplace(req, deleteResultData.getMsg(), redirectUri);
     }

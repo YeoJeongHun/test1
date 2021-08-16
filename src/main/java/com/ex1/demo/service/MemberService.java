@@ -46,7 +46,7 @@ public class MemberService {
     
     public ResultData notifyTempLoginPwByEmail(Member actor) {
         String title = "[" + siteName + "] 임시 패스워드 발송";
-        String tempPassword = Util.getTempPassword(6);
+        String tempPassword = Util.getTempPassword(6);		//숫자+영소문자로 구성된 6자리 랜덤함수
         String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
         body += "<a href=\"" + siteMainUri + "/mpaUsr/member/login\" target=\"_blank\">로그인 하러가기</a>";
 
@@ -74,6 +74,9 @@ public class MemberService {
 
     public ResultData modify(int id, String loginPw, String name, String nickname, String cellphoneNo, String email) {
         memberDao.modify(id, loginPw, name, nickname, cellphoneNo, email);
+        if(loginPw != null) {
+        	memberDao.delTempPw(id);
+        }
 
         return new ResultData("S-1", "회원정보가 수정되었습니다.", "id", id);
     }

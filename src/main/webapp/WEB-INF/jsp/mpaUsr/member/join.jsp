@@ -137,7 +137,7 @@ function MemberJoin__submitForm(form) {
                     <span>가입</span>
                 </button>
 
-                <a href="#" class="btn btn-sm mb-1">
+                <a href="/" class="btn btn-sm mb-1">
                     <span><i class="fas fa-home"></i></span>
                     &nbsp;
                     <span>홈</span>

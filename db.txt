@@ -243,8 +243,9 @@ CREATE TABLE checkLike(
   
   
   
-  SELECT *FROM article;
-  SELECT *FROM `reply`;
+  
+  
+  
   
   
   

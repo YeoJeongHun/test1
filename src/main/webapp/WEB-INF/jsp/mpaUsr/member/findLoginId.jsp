@@ -49,31 +49,31 @@ function MemberFindLoginId__submitForm(form) {
             </div>
 
             <div class="mt-4 btn-wrap gap-1">
-                <button type="submit" href="#" class="btn btn-primary btn-sm mb-1">
+                <button type="submit" class="btn btn-primary btn-sm mb-1">
                     <span><i class="fas fa-sign-in-alt"></i></span>
                     &nbsp;
                     <span>아이디 찾기</span>
                 </button>
 
-                <a href="../member/login" type="submit" href="#" class="btn btn-link btn-sm mb-1">
+                <a href="../member/login" type="submit" class="btn btn-link btn-sm mb-1">
                     <span><i class="fas fa-sign-in-alt"></i></span>
                     &nbsp;
                     <span>로그인</span>
                 </a>
 
-                <a href="../member/join" type="submit" href="#" class="btn btn-link btn-sm mb-1">
+                <a href="../member/join" type="submit" class="btn btn-link btn-sm mb-1">
                     <span><i class="fas fa-sign-in-alt"></i></span>
                     &nbsp;
                     <span>회원가입</span>
                 </a>
 
-                <a href="../member/findLoginPw" type="submit" href="#" class="btn btn-link btn-sm mb-1">
+                <a href="../member/findLoginPw" type="submit" class="btn btn-link btn-sm mb-1">
                     <span><i class="fas fa-sign-in-alt"></i></span>
                     &nbsp;
                     <span>비밀번호 찾기</span>
                 </a>
 
-                <a href="#" class="btn btn-link btn-sm mb-1">
+                <a href="/" class="btn btn-link btn-sm mb-1">
                     <span><i class="fas fa-home"></i></span>
                     &nbsp;
                     <span>홈</span>

@@ -171,7 +171,7 @@ public class MpaUsrMemberController {
 			return Util.msgAndBack(req, "일치하는 회원이 존재하지 않습니다.");
 		}
 
-		return Util.msgAndBack(req, String.format("회원님의 아이디는 `%s` 입니다.", member.getLoginId()));
+		return Util.msgAndReplace(req, String.format("회원님의 아이디는 `%s` 입니다.", member.getLoginId()),"login");
 	}
 
 	@RequestMapping("/mpaUsr/member/doLogout")

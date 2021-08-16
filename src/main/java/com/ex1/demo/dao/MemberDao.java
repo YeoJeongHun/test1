@@ -45,4 +45,6 @@ public interface MemberDao {
 
 	Member checkWithDrawal(@Param("loginId") String loginId);
 
+	void delTempPw(@Param("id") int id);
+
 }

@@ -61,7 +61,7 @@ public class MpaUsrArticleController {
 
         return "mpaUsr/article/detail";
     }
-
+    
     @RequestMapping("/mpaUsr/article/write")
     public String showWrite(HttpServletRequest req, @RequestParam(defaultValue = "1") int boardId) {
         Board board = articleService.getBoardById(boardId);
